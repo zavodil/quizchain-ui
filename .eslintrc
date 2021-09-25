@@ -5,6 +5,7 @@
     "node": true,
     "es6": true
   },
+  "extends": ["prettier"],
   "globals": {
     "Package": true,
     "Tinytest": true,
