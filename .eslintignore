@@ -1,0 +1,6 @@
+node_modules/
+android_bundle/
+dev_bundle/
+*.min.js
+.idea/
+.deploy/

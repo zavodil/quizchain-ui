@@ -18,5 +18,11 @@
       "server": "server/main.js"
     },
     "testModule": "tests/main.js"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.15.7",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-meteor": "^7.3.0"
   }
 }
