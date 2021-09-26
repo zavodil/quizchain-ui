@@ -1,11 +1,27 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+// ASK FLOWROUTER TO WAIT AND PULL ALL DYNAMIC DEPENDENCIES
+// BEFORE INITIALIZING ROUTER
+FlowRouter.wait();
+Promise.all([import('/imports/client/templates/layout/layout')])
+  .then(() => {
+    FlowRouter.initialize();
+  })
+  .catch(e => {
+    console.error('[Promise.all] loading dynamic imports error:', e);
+  });
+
 [
   {
     pathDef: '/',
     options: {
       title: 'Home',
-      action() {},
+      waitOn() {
+        return Promise.all([import('/imports/client/templates/home/home')]);
+      },
+      action() {
+        this.render('mainLayout', 'home');
+      },
     },
   },
   {
