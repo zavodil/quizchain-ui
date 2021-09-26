@@ -7,7 +7,7 @@ FlowRouter.globals.push({
   link: {
     twbs: {
       rel: 'stylesheet',
-      href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css',
+      href: 'https://cdn.jsdelivr.net/npm/bootswatch@5.1.1/dist/zephyr/bootstrap.css',
     },
   },
   script: {
