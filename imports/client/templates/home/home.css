@@ -1,0 +1,39 @@
+.login-container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin-bottom: 2em;
+    margin-top: 2em;
+}
+
+.login-container > button {
+    margin: 1em;
+}
+
+.quiz-list {
+    margin-top: 20%;
+    margin-bottom: 15%;
+}
+
+.quiz-list > h5 {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.quiz-about-container {
+    background-color: #808080;
+    max-width: 50%;
+    text-align: center;
+    margin: 1em auto;
+}
+
+.list-group > li {
+    background-color: #808080;
+}
+
+.list-group-item.active {
+    background-color: #454444 !important;
+    border-color: #454444 !important;
+    color: white;
+}
+

@@ -1,0 +1,25 @@
+<template name="mainLayout">
+    <body>
+        {{#if isLoggedIn}}
+            <div class="user-area">
+                <i class="bi bi-person-circle"></i>
+            </div>
+        {{/if}}
+
+        <div class="header-container">
+            <div class="title">
+                <h1>QUIZ CHAIN</h1>
+            </div>
+            <div class="subtitle">
+                Play quiz and earn crypto
+            </div>
+        </div>
+
+        <div class="main-container">
+            {{>yield}}
+        </div>
+    </body>
+    <footer class="footer-container">
+        Powered by NEAR
+    </footer>
+</template>
