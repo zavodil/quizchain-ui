@@ -1,5 +1,17 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
+const setShowSubtitle = () => {
+  import { Session } from 'meteor/session';
+
+  Session.set('showSubtitle', true);
+};
+
+const setHideSubtitle = () => {
+  import { Session } from 'meteor/session';
+
+  Session.set('showSubtitle', false);
+};
+
 // ASK FLOWROUTER TO WAIT AND PULL ALL DYNAMIC DEPENDENCIES
 // BEFORE INITIALIZING ROUTER
 FlowRouter.wait();
@@ -22,6 +34,7 @@ Promise.all([import('/imports/client/templates/layout/layout')])
       action() {
         this.render('mainLayout', 'home');
       },
+      triggersEnter: [setShowSubtitle],
     },
   },
   {
@@ -42,7 +55,15 @@ Promise.all([import('/imports/client/templates/layout/layout')])
     pathDef: '/my-profile',
     options: {
       title: 'My profile',
-      action() {},
+      waitOn() {
+        return Promise.all([
+          import('/imports/client/templates/my-profile/my-profile'),
+        ]);
+      },
+      action() {
+        this.render('mainLayout', 'myProfile');
+      },
+      triggersEnter: [setHideSubtitle],
     },
   },
   {

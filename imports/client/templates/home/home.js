@@ -41,7 +41,7 @@ Template.home.helpers({
   showMoreButton: true,
   dummyData,
   selectedQuiz: () => hasAnyQuizSelected() && getCurrentQuizSelected(),
-  showHelpText: () => Meteor.user && !hasAnyQuizSelected(),
+  showHelpText: () => Meteor.user() && !hasAnyQuizSelected(),
   activeClass: ({ _id }) =>
     hasAnyQuizSelected() && _id === getCurrentQuizSelected()._id
       ? 'active'
@@ -50,7 +50,7 @@ Template.home.helpers({
 
 Template.home.events({
   'click .quiz-row'(event, instance) {
-    if (!Meteor.user) return;
+    if (!Meteor.user()) return;
     if (!this) throw new Meteor.Error('No context found.');
     instance.state.set('selectedQuiz', this);
   },

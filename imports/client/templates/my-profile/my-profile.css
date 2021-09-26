@@ -1,0 +1,12 @@
+#username {
+    text-align: center;
+}
+
+.activity-log-container {
+    text-align: center;
+}
+
+.list-group > li {
+    background-color: #808080;
+    color: white;
+}
