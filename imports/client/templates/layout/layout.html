@@ -1,26 +1,24 @@
 <template name="mainLayout">
-    <body>
-        {{#if isLoggedIn}}
-            <div class="user-area">
-                <a id="username-circle"><i class="bi bi-person-circle"></i></a>
+    {{#if isLoggedIn}}
+        <div class="user-area">
+            <a id="username-circle"><i class="bi bi-person-circle"></i></a>
+        </div>
+    {{/if}}
+
+    <div class="header-container">
+        <div class="title">
+            <h1>QUIZ CHAIN</h1>
+        </div>
+        {{#if showSubtitle}}
+            <div class="subtitle">
+                Play quiz and earn crypto
             </div>
         {{/if}}
+    </div>
 
-        <div class="header-container">
-            <div class="title">
-                <h1>QUIZ CHAIN</h1>
-            </div>
-            {{#if showSubtitle}}
-                <div class="subtitle">
-                    Play quiz and earn crypto
-                </div>
-            {{/if}}
-        </div>
-
-        <div class="main-container">
-            {{>yield}}
-        </div>
-    </body>
+    <div class="main-container">
+        {{>yield}}
+    </div>
     <footer class="footer-container">
         Powered by NEAR
     </footer>
