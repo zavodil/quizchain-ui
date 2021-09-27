@@ -12,10 +12,6 @@
     margin-left: 2em;
 }
 
-.quiz-data {
-    text-align: center;
-}
-
 .answers {
     height: 100%;
     overflow: auto;

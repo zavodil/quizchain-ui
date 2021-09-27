@@ -25,3 +25,22 @@
 .user-area > a {
     font-size: 3rem;
 }
+
+.list-group {
+    margin: 2em;
+}
+
+.list-group > li {
+    background-color: #808080;
+}
+
+.list-group-item.active {
+    background-color: #454444 !important;
+    border-color: #454444 !important;
+    color: white;
+}
+
+.quiz-data {
+    text-align: center;
+}
+

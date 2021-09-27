@@ -31,7 +31,15 @@ Promise.all([import('/imports/client/templates/layout/layout')])
     options: {
       title: 'Leaderboard',
       name: 'leaderboardRoute',
-      action() {},
+      waitOn() {
+        return Promise.all([
+          import('/imports/client/templates/leaderboard/leaderboard'),
+        ]);
+      },
+      action() {
+        this.render('mainLayout', 'leaderboard');
+      },
+      triggersEnter: [setHideSubtitle],
     },
   },
   {
@@ -69,6 +77,7 @@ Promise.all([import('/imports/client/templates/layout/layout')])
     pathDef: '/game/:quizId',
     options: {
       title: 'Game',
+      name: 'gameRoute',
       waitOn() {
         return Promise.all([import('/imports/client/templates/game/game')]);
       },
