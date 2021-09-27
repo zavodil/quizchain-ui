@@ -1,2 +1,2 @@
-import '../router/router';
 import '../router/routes';
+import '../router/router';

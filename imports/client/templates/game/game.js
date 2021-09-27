@@ -3,11 +3,12 @@ import './game.css';
 import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 
-const dummyData = {
+export const dummyData = {
   1: {
     quizName: 'Geography Quiz',
     quizId: '1',
     quizCta: 'First 5 persons get 20 NEAR each',
+    quizReward: '10 NEAR',
     questions: [
       {
         title: 'Question 1 testing testing',
@@ -118,6 +119,6 @@ Template.game.events({
       return;
     }
 
-    FlowRouter.go('/');
+    FlowRouter.go('resultsRoute', { quizId: getCurrentQuiz().quizId });
   },
 });

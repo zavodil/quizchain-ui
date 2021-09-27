@@ -1,16 +1,5 @@
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-
-const setShowSubtitle = () => {
-  import { Session } from 'meteor/session';
-
-  Session.set('showSubtitle', true);
-};
-
-const setHideSubtitle = () => {
-  import { Session } from 'meteor/session';
-
-  Session.set('showSubtitle', false);
-};
+import { setHideSubtitle, setShowSubtitle } from './helpers';
 
 // ASK FLOWROUTER TO WAIT AND PULL ALL DYNAMIC DEPENDENCIES
 // BEFORE INITIALIZING ROUTER
@@ -41,6 +30,7 @@ Promise.all([import('/imports/client/templates/layout/layout')])
     pathDef: '/leaderboard/:quizId',
     options: {
       title: 'Leaderboard',
+      name: 'leaderboardRoute',
       action() {},
     },
   },
@@ -48,7 +38,16 @@ Promise.all([import('/imports/client/templates/layout/layout')])
     pathDef: '/results/:quizId',
     options: {
       title: 'Results',
-      action() {},
+      name: 'resultsRoute',
+      waitOn() {
+        return Promise.all([
+          import('/imports/client/templates/results/results'),
+        ]);
+      },
+      action() {
+        this.render('mainLayout', 'results');
+      },
+      triggersEnter: [setHideSubtitle],
     },
   },
   {

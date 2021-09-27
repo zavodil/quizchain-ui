@@ -1,5 +1,3 @@
-/* eslint no-new: 0 */
-
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import {
   FlowRouterMeta,
