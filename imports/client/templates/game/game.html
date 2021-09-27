@@ -1,0 +1,30 @@
+<template name="game">
+    <div class="game-container">
+        <div class="quiz-data">
+            <h3>{{quiz.quizName}}</h3>
+            <p>{{quiz.quizCta}}</p>
+        </div>
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{progressBarPercentage}}%;" aria-valuenow={{progressBarPercentage}} aria-valuemin="0" aria-valuemax={{dummyData.questions.length}}>
+                Questions: {{getNumberForPercentage}}
+            </div>
+        </div>
+        <div class="question-container">
+            <div class="question">
+                {{currentQuestion.title}}
+            </div>
+            <div class="answers">
+                <ul class="list-group">
+                    {{#each answer in answers }}
+                        <li class="list-group-item">
+                            <input class="form-check-input" type="radio" name="optionsGroup" id={{answer.number}}>
+                            <label class="form-check-label" for={{answer.number}}>
+                                {{answer.value}}
+                            </label>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>

@@ -67,10 +67,16 @@ Promise.all([import('/imports/client/templates/layout/layout')])
     },
   },
   {
-    pathDef: '/game/:quizId/:questionNumber',
+    pathDef: '/game/:quizId',
     options: {
       title: 'Game',
-      action() {},
+      waitOn() {
+        return Promise.all([import('/imports/client/templates/game/game')]);
+      },
+      action(params) {
+        this.render('mainLayout', 'game', { params });
+      },
+      triggersEnter: [setHideSubtitle],
     },
   },
   {
