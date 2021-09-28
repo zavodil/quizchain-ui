@@ -26,10 +26,6 @@
     font-size: 3rem;
 }
 
-.list-group {
-    margin: 2em;
-}
-
 .list-group > li {
     background-color: #808080;
 }

@@ -54,4 +54,20 @@ Template.home.events({
     if (!this) throw new Meteor.Error('No context found.');
     instance.state.set('selectedQuiz', this);
   },
+  'click #join-button'(event, instance) {
+    if (!Meteor.user()) return;
+
+    import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
+    FlowRouter.go('gameRoute', {
+      quizId: 1,
+    });
+  },
+  'click #stats-button'(event, instance) {
+    import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
+    FlowRouter.go('leaderboardRoute', {
+      quizId: 1,
+    });
+  },
 });
