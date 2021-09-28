@@ -1,73 +1,68 @@
+import { app } from '/imports/client/app.js';
+
+import { ReactiveVar } from 'meteor/reactive-var';
 import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import './home.css';
 import './home.html';
 
-const dummyData = [
-  {
-    _id: 1,
-    name: 'aaa',
-    reward: '100 NEAR',
-    cta: 'First 5 winners get X points each',
-  },
-  {
-    _id: 2,
-    name: 'aaa',
-    reward: '100 NEAR',
-    cta: 'First 5 winners get Y points each',
-  },
-  {
-    _id: 3,
-    name: 'aaa',
-    reward: '100 NEAR',
-    cta: 'First 5 winners get Z points each',
-  },
-];
-
-const getCurrentQuizSelected = () =>
-  Template.instance()?.state.get('selectedQuiz');
-const hasAnyQuizSelected = () => !!getCurrentQuizSelected();
+const PAGINATE_BY = 3;
 
 Template.home.onCreated(function () {
-  import { ReactiveDict } from 'meteor/reactive-dict';
+  this.selectedQuiz = new ReactiveVar(false);
+  this.showLines = new ReactiveVar(PAGINATE_BY);
 
-  this.state = new ReactiveDict();
-  this.state.setDefault({
-    selectedQuiz: null,
+  this.autorun((comp) => {
+    const user = app.user.get();
+    if (user) {
+      app.fetchQuizData();
+      comp.stop();
+    }
   });
 });
 
 Template.home.helpers({
-  showMoreButton: true,
-  dummyData,
-  selectedQuiz: () => hasAnyQuizSelected() && getCurrentQuizSelected(),
-  showHelpText: () => Meteor.user() && !hasAnyQuizSelected(),
-  activeClass: ({ _id }) =>
-    hasAnyQuizSelected() && _id === getCurrentQuizSelected()._id
-      ? 'active'
-      : '',
+  quizData() {
+    const dataArr = app._quizData.get();
+    return dataArr.slice(0, Template.instance().showLines.get());
+  },
+  haveNextPage() {
+    return app._quizData.get().length > Template.instance().showLines.get();
+  }
 });
 
 Template.home.events({
-  'click .quiz-row'(event, instance) {
-    if (!Meteor.user()) return;
-    if (!this) throw new Meteor.Error('No context found.');
-    instance.state.set('selectedQuiz', this);
+  'click [data-show-more]'(e, template) {
+    e.preventDefault();
+    template.showLines.set(template.showLines.get() + PAGINATE_BY);
+    return false;
   },
-  'click #join-button'(event, instance) {
-    if (!Meteor.user()) return;
+  'click [data-login]'(e) {
+    e.preventDefault();
 
-    import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+    app.loginNEARWallet();
+    return false;
+  }
 
-    FlowRouter.go('gameRoute', {
-      quizId: 1,
-    });
-  },
-  'click #stats-button'(event, instance) {
-    import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+  // 'click .quiz-row'(event, instance) {
+  //   if (!Meteor.user()) return;
+  //   if (!this) throw new Meteor.Error('No context found.');
+  //   instance.state.set('selectedQuiz', this);
+  // },
+  // 'click #join-button'(event, instance) {
+  //   if (!Meteor.user()) return;
 
-    FlowRouter.go('leaderboardRoute', {
-      quizId: 1,
-    });
-  },
+  //   import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
+  //   FlowRouter.go('gameRoute', {
+  //     quizId: 1,
+  //   });
+  // },
+  // 'click #stats-button'(event, instance) {
+  //   import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+
+  //   FlowRouter.go('leaderboardRoute', {
+  //     quizId: 1,
+  //   });
+  // },
 });

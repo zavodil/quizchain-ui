@@ -1,1 +1,1 @@
-import '../imports/client/startup/index';
+import '/imports/client/startup/index';

@@ -1,47 +1,62 @@
 <template name="home">
-    <div class="home-container">
+  {{#if appUser}}
+    <h1 class="lead">Available Quizzes</h1>
+    {{#if quizData.length}}
+      <ul class="list-group">
+        {{#each quizData}}
+          <a href="#" class="list-group-item d-flex justify-content-between align-items-center">
+            {{name}}
+            <span class="badge bg-dark rounded-pill">{{reward}}</span>
+          </a>
+        {{/each}}
 
-        {{#if showHelpText}}
-            <div class="cta-container">
-                <h5>Choose preferred quiz by tapping on one of them.</h5>
-            </div>
+        {{#if haveNextPage}}
+          <a href="#" class="list-group-item text-center fw-bold py-2" data-show-more>Show more</a>
         {{/if}}
-
-        <div class="quiz-list">
-            <h5>AVAILABLE QUIZES</h5>
-            <ul class="list-group">
-                {{#each dummyData}}
-                    <li class="list-group-item d-flex justify-content-between align-items-center quiz-row {{activeClass this}}" id={{this._id}}>
-                        {{this.name}}
-                        <span class="badge bg-dark rounded-pill">{{this.reward}}</span>
-                    </li>
-                {{/each}}
-
-                {{#if showMoreButton}}
-                    <li class="list-group-item d-flex justify-content-between align-items-center" id='show-more'>
-                        <a href="#">Show more</a>
-                    </li>
-                {{/if}}
-            </ul>
+      </ul>
+    {{else}}
+      <div class="text-center my-5 py-5">
+        <div class="spinner-grow text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
+      </div>
+    {{/if}}
 
-        {{#unless isLoggedIn}}
-            <div class="login-container">
-                <button type="button" class="btn btn-dark" id="login-button">Login with NEAR wallet</button>
-                <a href="#">Or create account for free</a>
-            </div>
-        {{/unless}}
+    {{#with selectedQuiz}}
+      <div class="card-body bg-light p-4 text-center my-3">
+        <h3>{{name}}</h3>
+        <p>{{conditions}}</p>
+        <br/>
+        <div class="d-grid gap-2 pb-2">
+          <a href="#" class="btn btn-lg btn-success">Join</a>
+          or check
+        </div>
+        <a href="#" class="btn btn-lg btn-outline-primary">stats</a>
+      </div>
+    {{/with}}
+  {{else}}
+    <h1 class="lead">Be the first to pass the quiz and earn free crypto!</h1>
 
-        {{#if selectedQuiz}}
-            <div class="quiz-about-container rounded">
-                <h3>{{selectedQuiz.name}}</h3>
-                <h4>{{selectedQuiz.cta}}</h4>
-                <br/>
-                <div class="buttons d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-dark" id="join-button">Join</button>
-                    <button type="button" class="btn btn-lg btn-dark" id="stats-button">Stats</button>
-                </div>
-            </div>
-        {{/if}}
+    <img src="/images/img-login.svg" class="img-fluid my-5" alt="Quiz Chain: Answer correctly to win crypto!">
+
+    <div class="card-body bg-light p-4 text-center my-3">
+      {{#if isLoggingIn}}
+        <button type="button" class="btn btn-primary disabled" disabled="disabled">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          <br>
+          Signing in securely...
+        </button>
+      {{else}}
+        <div class="d-grid gap-2 pb-2">
+          <button type="button" class="btn btn-primary btn-lg" data-login>Login with NEAR wallet</button>
+          or
+        </div>
+        <a class="btn btn-secondary text-dark fw-bold" href="https://wallet.near.org/create" title="Sign Up to NEAR wallet" target="_blank" rel="noopener nofollow">create account for free</a>
+      {{/if}}
     </div>
+  {{/if}}
+
+  <footer class="py-4 mt-5 border-top text-center fw-bold">
+    Powered by <a href="https://near.org/" title="NEAR Protocol" target="_blank" rel="noopener nofollow">NEAR</a>
+  </footer>
 </template>
