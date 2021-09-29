@@ -1,2 +1,2 @@
 import '../router/routes';
-import '../router/router';
+import '../styles/bootstrap.css';
