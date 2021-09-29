@@ -5,6 +5,13 @@
         <img src="/images/logo-menu.png" alt="Quiz Chain" width="28" height="28">
         Quiz Chain
       </a>
+      {{#if appUser}}
+        <div class="d-flex">
+          <a href="{{pathFor 'profile'}}">
+            <img class="rounded-circle" width="28" height="28" src="/images/avatar-placeholder.png">
+          </a>
+        </div>
+      {{/if}}
     </div>
   </nav>
 </template>
