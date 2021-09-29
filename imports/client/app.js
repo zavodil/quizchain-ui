@@ -8,8 +8,13 @@ const { connect, keyStores, WalletConnection, Contract, utils } = nearAPI;
 
 const app = {
   user: new ReactiveVar(false),
+  activeQuiz: new ReactiveVar(false),
+  activeQuizQuestion: new ReactiveVar(0),
   _quizData: new ReactiveVar([]),
   _isLoggingIn: new ReactiveVar(false),
+  formatNearAmount(str) {
+    return parseFloat(utils.format.formatNearAmount(str))
+  },
   getQuizData() {
     const quizData = this._quizData.get();
     if (!quizData || !quizData.length) {
@@ -44,7 +49,7 @@ const app = {
   },
   async loginNEARWallet() {
     this._isLoggingIn.set(true);
-    app.wallet.requestSignIn();
+    app.wallet.requestSignIn(Meteor.settings.public.nearConfig.contractName, 'Quiz Chain');
   }
 };
 
@@ -65,7 +70,7 @@ Meteor.startup(async () => {
     app.user.set(app._account);
 
     app.contract = await new Contract(app._account, Meteor.settings.public.nearConfig.contractName, {
-      viewMethods: ['get_quiz', 'get_active_quizzes', 'gets_quiz_stats', 'get_game'],
+      viewMethods: ['get_quiz', 'get_active_quizzes', 'gets_quiz_stats', 'get_game', 'get_distributed_rewards_by_quiz'],
       changeMethods: ['claim_reward', 'start_game', 'send_answer'],
       sender: app._account.accountId
     });
