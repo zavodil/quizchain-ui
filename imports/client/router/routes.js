@@ -16,6 +16,7 @@ Promise.all([
   pathDef: '/',
   options: {
     title: 'Quiz Chain',
+    name: 'home',
     waitOn() {
       return import('/imports/client/templates/home/home');
     },
@@ -27,7 +28,7 @@ Promise.all([
   pathDef: '/leaderboard/:quizId',
   options: {
     title: 'Leaderboard',
-    name: 'leaderboardRoute',
+    name: 'leaderboard',
     waitOn() {
       return import('/imports/client/templates/leaderboard/leaderboard');
     },
@@ -39,18 +40,19 @@ Promise.all([
   pathDef: '/results/:quizId',
   options: {
     title: 'Results',
-    name: 'resultsRoute',
+    name: 'results',
     waitOn() {
       return import('/imports/client/templates/results/results');
     },
-    action() {
-      this.render('mainLayout', 'results');
+    action(params) {
+      this.render('mainLayout', 'results', { params });
     }
   },
 }, {
-  pathDef: '/my-profile',
+  pathDef: '/profile',
   options: {
     title: 'My profile',
+    route: 'profile',
     waitOn() {
       return import('/imports/client/templates/my-profile/my-profile');
     },
@@ -62,7 +64,7 @@ Promise.all([
   pathDef: '/game/:quizId',
   options: {
     title: 'Game',
-    name: 'gameRoute',
+    name: 'game',
     waitOn() {
       return import('/imports/client/templates/game/game');
     },
