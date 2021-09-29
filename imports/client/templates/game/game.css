@@ -1,23 +1,25 @@
 .list-group-item {
-    cursor: pointer;
-    display: flex !important;
-    align-items: center;
+  cursor: pointer;
+  display: flex !important;
+  align-items: center;
 }
-.list-group-item > input {
-    margin-right: 1em;
-    position: absolute;
+.list-group-item > .form-check-input {
+  margin-right: 1em;
+  position: absolute;
 }
 
-.list-group-item > label {
-    margin-left: 2em;
+.list-group-item > .form-check-label {
+  margin-left: 2em;
 }
 
 .answers {
-    height: 100%;
-    overflow: auto;
+  height: 100%;
+  overflow: auto;
 }
 
-.question {
-    text-align: center;
-    margin: 2em;
+.sticky-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }

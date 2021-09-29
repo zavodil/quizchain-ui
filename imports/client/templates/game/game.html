@@ -1,30 +1,62 @@
 <template name="game">
-    <div class="game-container">
-        <div class="quiz-data">
-            <h3>{{quiz.quizName}}</h3>
-            <p>{{quiz.quizCta}}</p>
-        </div>
-        <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{progressBarPercentage}}%;" aria-valuenow={{progressBarPercentage}} aria-valuemin="0" aria-valuemax={{dummyData.questions.length}}>
-                Questions: {{getNumberForPercentage}}
-            </div>
-        </div>
-        <div class="question-container">
-            <div class="question">
-                {{currentQuestion.title}}
-            </div>
-            <div class="answers">
-                <ul class="list-group">
-                    {{#each answer in answers }}
-                        <li class="list-group-item">
-                            <input class="form-check-input" type="radio" name="optionsGroup" id={{answer.number}}>
-                            <label class="form-check-label" for={{answer.number}}>
-                                {{answer.value}}
-                            </label>
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
+  <div class="game-container">
+    {{#with currentQuiz}}
+      <h1 class="lead text-start py-0">{{title}}</h1>
+      <p>{{description}}</p>
+    {{/with}}
+
+    <div class="progress">
+      <div class="progress-bar bg-success" role="progressbar" style="width: {{progressBarPercentage}}%;" aria-valuenow={{progressBarPercentage}} aria-valuemin="0" aria-valuemax={{currentQuiz.questions.length}}>
+        Questions: {{currentQuestionNum}}/{{currentQuiz.questions.length}}
+      </div>
     </div>
+
+    {{#with currentQuestion}}
+      <div class="question-container">
+        <p class="lead text-start mb-0 pb-1">
+          {{question.content}}
+        </p>
+        {{#if question.hint}}
+          <p class="text-muted">{{question.hint}}</p>
+        {{/if}}
+
+        <div class="answers">
+          {{#if compare question.kind '===' 'Text'}}
+            <label for="{{answer.id}}" class="form-label">Enter answer:</label>
+            <input placeholder="{{compare question.hint '||' 'enter answer here'}}" class="form-control" type="text" name="textfield" id="{{answer.id}}" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="off">
+          {{else}}
+            <ul class="list-group">
+              {{#each answer in question_options}}
+                <label class="list-group-item" for="{{answer.id}}">
+                  {{#if compare question.kind '===' 'OneChoice'}}
+                    <input class="form-check-input" type="radio" value="{{answer.id}}" name="oneof" id="{{answer.id}}">
+                    <span class="form-check-label">
+                      {{answer.content}}
+                    </span>
+                  {{/if}}
+
+                  {{#if compare question.kind '===' 'MultipleChoice'}}
+                    <input class="form-check-input" type="checkbox" value="{{answer.id}}" name="manyfrom" id="{{answer.id}}">
+                    <span class="form-check-label">
+                      {{answer.content}}
+                    </span>
+                  {{/if}}
+                </label>
+              {{/each}}
+            </ul>
+          {{/if}}
+        </div>
+      </div>
+    {{/with}}
+  </div>
+
+  <div class="sticky-bottom bg-light pt-3 pb-5 text-center mt-3">
+    <button type="button" class="btn btn-primary btn-lg {{#if isLoading}}disabled{{/if}}" disabled="{{#if isLoading}}disabled{{/if}}" data-submit-answer>
+      {{#if isLoading}}
+        &nbsp; <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;
+      {{else}}
+        Submit
+      {{/if}}
+    </button>
+  </div>
 </template>
