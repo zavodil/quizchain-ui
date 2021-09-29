@@ -1,32 +1,38 @@
 <template name="myProfile">
-    <div>
-        <h2 id="username">{{userData.name}}</h2>
-        <br/>
-        <div class="activity-log-container">
-            <h3>Activity log</h3>
-            <br/>
-            <div>
-                <ul class="list-group">
-                    {{#each log in userData.scores}}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{log.quizName}}
-                            <div class="badge-container">
-                                {{#unless log.isFinished}}
-                                    <span class="badge bg-dark rounded-pill">{{log.answered}}/10</span>
-                                {{else}}
-                                    <span class="badge bg-dark rounded-pill">{{log.quizReward}}</span>
-                                {{/unless}}
-                                {{#if shouldBeAbleToClaim log=log }}
-                                    <a href="#" class="badge bg-success rounded-pill" id="claim-badge-button">CLAIM</a>
-                                {{/if}}
-                                {{#if log.claimed}}
-                                    <span href="#" class="badge bg-danger rounded-pill">Already claimed</span>
-                                {{/if}}
-                            </div>
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
+  <h1 class="lead text-start py-0">{{appUser.accountId}}: Settings</h1>
+
+  <button data-logout type="button" class="btn btn-danger">logout</button>
+
+  {{!--
+  <div>
+    <h2 id="username">{{userData.name}}</h2>
+    <br/>
+    <div class="activity-log-container">
+      <h3>Activity log</h3>
+      <br/>
+      <div>
+        <ul class="list-group">
+          {{#each log in userData.scores}}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{log.quizName}}
+              <div class="badge-container">
+                {{#unless log.isFinished}}
+                  <span class="badge bg-dark rounded-pill">{{log.answered}}/10</span>
+                {{else}}
+                  <span class="badge bg-dark rounded-pill">{{log.quizReward}}</span>
+                {{/unless}}
+                {{#if shouldBeAbleToClaim log=log }}
+                  <a href="#" class="badge bg-success rounded-pill" id="claim-badge-button">CLAIM</a>
+                {{/if}}
+                {{#if log.claimed}}
+                  <span href="#" class="badge bg-danger rounded-pill">Already claimed</span>
+                {{/if}}
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
     </div>
+  </div>
+  --}}
 </template>

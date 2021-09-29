@@ -52,7 +52,7 @@ Promise.all([
   pathDef: '/profile',
   options: {
     title: 'My profile',
-    route: 'profile',
+    name: 'profile',
     waitOn() {
       return import('/imports/client/templates/my-profile/my-profile');
     },

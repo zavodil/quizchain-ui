@@ -1,47 +1,24 @@
+import { app } from '/imports/client/app.js';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Template } from 'meteor/templating';
-// import { Session } from 'meteor/session';
+// import { ReactiveVar } from 'meteor/reactive-var';
 import './my-profile.html';
-import './my-profile.css';
 
-// Template.myProfile.onCreated(function () {
-//   Session.set('showSubtitle', false);
-// });
+Template.myProfile.onCreated(function () {
+  if (!app._account) {
+    FlowRouter.go('home');
+  }
+});
 
-// Here we would fetch the quiz name, reward and etc from the quizId.
-const dummyUser = {
-  name: 'Dummy User',
-  scores: [
-    {
-      quizId: '1',
-      quizName: 'Testing 123',
-      quizReward: '10 NEAR',
-      answered: 5,
-      claimed: false,
-      isFinished: false,
-    },
-    {
-      quizId: '2',
-      quizName: 'Testing 123',
-      quizReward: '50 NEAR',
-      answered: 6,
-      claimed: false,
-      isFinished: false,
-    },
-    {
-      quizId: '3',
-      quizName: 'Testing 123',
-      quizReward: '10 DAI',
-      answered: 10,
-      claimed: true,
-      isFinished: true,
-    },
-  ],
-};
 Template.myProfile.helpers({
-  userData: dummyUser,
-  shouldBeAbleToClaim: ({ isFinished, claimed }) => isFinished && !claimed,
+
 });
 
 Template.myProfile.events({
-  'click #claim-badge-button': () => alert('Hello!'),
+  'click [data-logout]'(e) {
+    e.preventDefault();
+    app.wallet.signOut();
+    window.location.href = '/';
+    return false;
+  }
 });
