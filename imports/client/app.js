@@ -13,7 +13,7 @@ const app = {
   _quizData: new ReactiveVar([]),
   _isLoggingIn: new ReactiveVar(false),
   formatNearAmount(str) {
-    return parseFloat(utils.format.formatNearAmount(str))
+    return parseFloat(utils.format.formatNearAmount(str));
   },
   getQuizData() {
     const quizData = this._quizData.get();
@@ -45,7 +45,6 @@ const app = {
     }
 
     this._quizData.set(quizData);
-    console.log(quizData);
   },
   async loginNEARWallet() {
     this._isLoggingIn.set(true);
