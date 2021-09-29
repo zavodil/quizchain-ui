@@ -40,6 +40,7 @@ const app = {
     }
 
     this._quizData.set(quizData);
+    console.log(quizData);
   },
   async loginNEARWallet() {
     this._isLoggingIn.set(true);
@@ -64,7 +65,7 @@ Meteor.startup(async () => {
     app.user.set(app._account);
 
     app.contract = await new Contract(app._account, Meteor.settings.public.nearConfig.contractName, {
-      viewMethods: ['get_quiz', 'get_active_quizzes', 'gets_quiz_stats'],
+      viewMethods: ['get_quiz', 'get_active_quizzes', 'gets_quiz_stats', 'get_game'],
       changeMethods: ['claim_reward', 'start_game', 'send_answer'],
       sender: app._account.accountId
     });

@@ -54,5 +54,17 @@ Template.home.events({
     e.preventDefault();
     template.selectedQuiz.set(false);
     return false;
+  },
+  async 'click [data-start-quiz]'(e) {
+    e.preventDefault();
+    console.log(this)
+    const game = await app.contract.get_game({ quiz_id: this.id, account_id: app._account.accountId });
+
+    if (!game) {
+      const startGame = await app.contract.start_game({ quiz_id: this.id });
+      console.log({startGame})
+    }
+    console.log({game})
+    return false;
   }
 });
