@@ -13,3 +13,9 @@ NEAR Protocol-powered quizzes with crypto-prizes
 # NEAR TESTNET
 meteor --settings=settings-testnet.json
 ```
+
+## How to update
+
+1. Ssh to server
+2. cd /home/appuser
+3. ./deploy.sh -bmpr near-quiz-chain
