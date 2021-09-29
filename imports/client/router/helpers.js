@@ -1,11 +1,11 @@
-export const setShowSubtitle = () => {
-  import { Session } from 'meteor/session';
+// export const setShowSubtitle = () => {
+//   import { Session } from 'meteor/session';
 
-  Session.set('showSubtitle', true);
-};
+//   Session.set('showSubtitle', true);
+// };
 
-export const setHideSubtitle = () => {
-  import { Session } from 'meteor/session';
+// export const setHideSubtitle = () => {
+//   import { Session } from 'meteor/session';
 
-  Session.set('showSubtitle', false);
-};
+//   Session.set('showSubtitle', false);
+// };

@@ -1,11 +1,11 @@
 import { Template } from 'meteor/templating';
-import { Session } from 'meteor/session';
+// import { Session } from 'meteor/session';
 import './my-profile.html';
 import './my-profile.css';
 
-Template.myProfile.onCreated(function () {
-  Session.set('showSubtitle', false);
-});
+// Template.myProfile.onCreated(function () {
+//   Session.set('showSubtitle', false);
+// });
 
 // Here we would fetch the quiz name, reward and etc from the quizId.
 const dummyUser = {
