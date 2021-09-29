@@ -18,4 +18,4 @@ meteor --settings=settings-testnet.json
 
 1. Ssh to server
 2. cd /home/appuser
-3. ./deploy.sh -bmpr near-quiz-chain
+3. ./deploy.sh -bmpr near-quiz-chain-main
