@@ -32,8 +32,8 @@ Promise.all([
     waitOn() {
       return import('/imports/client/templates/leaderboard/leaderboard');
     },
-    action() {
-      this.render('mainLayout', 'leaderboard');
+    action(params) {
+      this.render('mainLayout', 'leaderboard', { params });
     }
   },
 }, {
