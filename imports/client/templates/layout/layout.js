@@ -1,26 +1,12 @@
-import { Template } from 'meteor/templating';
-import { Meteor } from 'meteor/meteor';
-import { Session } from 'meteor/session';
+// import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+// import { Template } from 'meteor/templating';
+import '/imports/client/templates/navbar/navbar.js';
 import './layout.html';
-import './layout.css';
 
-Template.registerHelper('isLoggedIn', () => {
-  return Meteor.user();
-});
-
-Template.mainLayout.helpers({
-  showSubtitle: () => Session.get('showSubtitle'),
-});
-
-Template.mainLayout.events({
-  'click .title': () => {
-    import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-
-    FlowRouter.go('/');
-  },
-  'click #username-circle': () => {
-    import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-
-    FlowRouter.go('/my-profile');
-  },
-});
+// Template.mainLayout.events({
+//   'click [data-href]'(e) {
+//     e.preventDefault();
+//     FlowRouter.go(e.currentTarget.dataset.href);
+//     return false;
+//   }
+// });
