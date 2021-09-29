@@ -1,5 +1,6 @@
 import { app } from '/imports/client/app.js';
 
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Template } from 'meteor/templating';
 import './home.css';
@@ -57,14 +58,23 @@ Template.home.events({
   },
   async 'click [data-start-quiz]'(e) {
     e.preventDefault();
-    console.log(this)
     const game = await app.contract.get_game({ quiz_id: this.id, account_id: app._account.accountId });
 
+    let questionNo = 0;
     if (!game) {
-      const startGame = await app.contract.start_game({ quiz_id: this.id });
-      console.log({startGame})
+      await app.contract.start_game({ quiz_id: this.id });
+    } else {
+      questionNo = game.answers_quantity;
+
+      if (questionNo >= this.total_questions) {
+        FlowRouter.go('results', { quizId: `${this.id}` });
+        return false;
+      }
     }
-    console.log({game})
+
+    app.activeQuiz.set(this);
+    app.activeQuizQuestion.set(questionNo);
+    FlowRouter.go('game', { quizId: `${this.id}` });
     return false;
   }
 });
