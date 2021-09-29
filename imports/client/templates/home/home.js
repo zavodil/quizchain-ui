@@ -2,7 +2,6 @@ import { app } from '/imports/client/app.js';
 
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Template } from 'meteor/templating';
-import { Meteor } from 'meteor/meteor';
 import './home.css';
 import './home.html';
 
@@ -28,6 +27,9 @@ Template.home.helpers({
   },
   haveNextPage() {
     return app._quizData.get().length > Template.instance().showLines.get();
+  },
+  selectedQuiz() {
+    return Template.instance().selectedQuiz.get();
   }
 });
 
@@ -42,27 +44,15 @@ Template.home.events({
 
     app.loginNEARWallet();
     return false;
+  },
+  'click [data-select-quiz]'(e, template) {
+    e.preventDefault();
+    template.selectedQuiz.set(this);
+    return false;
+  },
+  'click [data-deselect-quiz]'(e, template) {
+    e.preventDefault();
+    template.selectedQuiz.set(false);
+    return false;
   }
-
-  // 'click .quiz-row'(event, instance) {
-  //   if (!Meteor.user()) return;
-  //   if (!this) throw new Meteor.Error('No context found.');
-  //   instance.state.set('selectedQuiz', this);
-  // },
-  // 'click #join-button'(event, instance) {
-  //   if (!Meteor.user()) return;
-
-  //   import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-
-  //   FlowRouter.go('gameRoute', {
-  //     quizId: 1,
-  //   });
-  // },
-  // 'click #stats-button'(event, instance) {
-  //   import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-
-  //   FlowRouter.go('leaderboardRoute', {
-  //     quizId: 1,
-  //   });
-  // },
 });

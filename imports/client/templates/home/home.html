@@ -4,9 +4,9 @@
     {{#if quizData.length}}
       <ul class="list-group">
         {{#each quizData}}
-          <a href="#" class="list-group-item d-flex justify-content-between align-items-center">
-            {{name}}
-            <span class="badge bg-dark rounded-pill">{{reward}}</span>
+          <a data-select-quiz href="#" class="list-group-item d-flex justify-content-between align-items-center {{#if compare selectedQuiz.id '===' id}}active{{/if}}">
+            {{compare title '||' id}}
+            <span class="badge bg-dark rounded-pill">{{totalAvailableRewards}} NEAR</span>
           </a>
         {{/each}}
 
@@ -23,15 +23,27 @@
     {{/if}}
 
     {{#with selectedQuiz}}
-      <div class="card-body bg-light p-4 text-center my-3">
-        <h3>{{name}}</h3>
-        <p>{{conditions}}</p>
-        <br/>
-        <div class="d-grid gap-2 pb-2">
-          <a href="#" class="btn btn-lg btn-success">Join</a>
-          or check
+      <div class="modal-backdrop fade show"></div>
+      <div class="modal fade show" style="display:block">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{title}}</h5>
+              <button data-deselect-quiz type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body bg-light border-top">
+              <p>{{description}}</p>
+              <p>Be the first of {{totalPrizesQty}} participants to answer correctly all questions to win stake of {{totalAvailableRewards}} NEAR</p>
+            </div>
+
+            <div class="modal-footer border-top">
+              <a data-start-quiz href="#" class="btn btn-lg btn-success">Join</a>
+              or check
+              <a href="#">stats</a>
+            </div>
+          </div>
         </div>
-        <a href="#" class="btn btn-lg btn-outline-primary">stats</a>
       </div>
     {{/with}}
   {{else}}
