@@ -30,9 +30,7 @@ Template.leaderboard.onCreated(function () {
 
     this.timer = setInterval(async () => {
       stats = await app.contract.gets_quiz_stats({ quiz_id: this.quizId, from_index: 0, limit: 20 });
-      if (!stats) {
-        FlowRouter.go('home');
-      } else {
+      if (stats) {
         this.stats.set(stats);
       }
     }, 15000);
