@@ -101,6 +101,10 @@ Template.game.events({
     } else if (question.question.kind === 'Text') {
       answer = void 0;
       textAnswer = template.$('input[name="textfield"]').val().trim().toLowerCase();
+
+      if (!textAnswer.length) {
+        return false;
+      }
     } else {
       return false;
     }
@@ -134,7 +138,7 @@ Template.game.events({
           }, 256);
         }, 1024);
       } else {
-        FlowRouter.go('results', { quizId: `${quiz.id}` });
+        FlowRouter.go('results', { quizId: quiz._id });
       }
     } catch (err) {
       console.error('[data-submit-answer] [send_answer] ERROR:', err);
