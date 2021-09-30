@@ -10,6 +10,8 @@
 
 .list-group-item > .form-check-label {
   margin-left: 2em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .answers {
@@ -18,8 +20,16 @@
 }
 
 .sticky-bottom {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
+}
+
+.game-submit-box {
+  box-shadow: 0 3px 30px rgba(0, 0, 0, 0.5);
+}
+
+.game-container {
+  margin-bottom: 250px;
 }
