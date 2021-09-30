@@ -5,49 +5,57 @@
       <p>{{description}}</p>
     {{/with}}
 
-    <div class="progress">
+    <div class="progress" id="progressbar">
       <div class="progress-bar bg-success" role="progressbar" style="width:{{progressBarPercentage}}%" aria-valuenow="{{currentQuestionNum}}" aria-valuemin="0" aria-valuemax="{{currentQuiz.questions.length}}">
         Questions: {{currentQuestionNum}}/{{currentQuiz.questions.length}}
       </div>
     </div>
 
-    {{#with currentQuestion}}
-      <div class="question-container">
-        <p class="lead text-start mb-0 pb-1">
-          {{question.content}}
-        </p>
-        {{#if question.hint}}
-          <p class="text-muted">{{question.hint}}</p>
-        {{/if}}
-
-        <div class="answers">
-          {{#if compare question.kind '===' 'Text'}}
-            <label for="{{answer.id}}" class="form-label">Enter answer:</label>
-            <input placeholder="{{compare question.hint '||' 'enter answer here'}}" class="form-control" type="text" name="textfield" id="{{answer.id}}" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="off">
-          {{else}}
-            <ul class="list-group">
-              {{#each answer in question_options}}
-                <label class="list-group-item" for="{{answer.id}}">
-                  {{#if compare question.kind '===' 'OneChoice'}}
-                    <input class="form-check-input" type="radio" value="{{answer.id}}" name="oneof" id="{{answer.id}}">
-                    <span class="form-check-label">
-                      {{answer.content}}
-                    </span>
-                  {{/if}}
-
-                  {{#if compare question.kind '===' 'MultipleChoice'}}
-                    <input class="form-check-input" type="checkbox" value="{{answer.id}}" name="manyfrom" id="{{answer.id}}">
-                    <span class="form-check-label">
-                      {{answer.content}}
-                    </span>
-                  {{/if}}
-                </label>
-              {{/each}}
-            </ul>
-          {{/if}}
+    {{#if isPageLoading}}
+      <div class="text-center my-5 py-5">
+        <div class="spinner-grow text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-    {{/with}}
+    {{else}}
+      {{#with currentQuestion}}
+        <div class="question-container">
+          <p class="lead text-start mb-0 pb-1">
+            {{question.content}}
+          </p>
+          {{#if question.hint}}
+            <p class="text-muted">{{question.hint}}</p>
+          {{/if}}
+
+          <div class="answers">
+            {{#if compare question.kind '===' 'Text'}}
+              <label for="{{answer.id}}" class="form-label">Enter answer:</label>
+              <input placeholder="{{compare question.hint '||' 'enter answer here'}}" class="form-control" type="text" name="textfield" id="{{answer.id}}" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="off">
+            {{else}}
+              <ul class="list-group">
+                {{#each answer in question_options}}
+                  <label class="list-group-item" for="{{answer.id}}">
+                    {{#if compare question.kind '===' 'OneChoice'}}
+                      <input class="form-check-input" type="radio" value="{{answer.id}}" name="oneof" id="{{answer.id}}">
+                      <span class="form-check-label">
+                        {{answer.content}}
+                      </span>
+                    {{/if}}
+
+                    {{#if compare question.kind '===' 'MultipleChoice'}}
+                      <input class="form-check-input" type="checkbox" value="{{answer.id}}" name="manyfrom" id="{{answer.id}}">
+                      <span class="form-check-label">
+                        {{answer.content}}
+                      </span>
+                    {{/if}}
+                  </label>
+                {{/each}}
+              </ul>
+            {{/if}}
+          </div>
+        </div>
+      {{/with}}
+    {{/if}}
   </div>
 
   <div class="sticky-bottom bg-light pt-3 pb-4 text-center mt-3 game-submit-box">

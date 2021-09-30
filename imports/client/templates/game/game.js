@@ -8,6 +8,7 @@ import './game.html';
 import './game.css';
 
 Template.game.onCreated(function () {
+  this.isPageLoading = new ReactiveVar(false);
   this.isLoading = new ReactiveVar(false);
   this.quiz = app.activeQuiz.get();
 
@@ -16,9 +17,22 @@ Template.game.onCreated(function () {
   }
 });
 
+Template.game.onRendered(function () {
+  setTimeout(() => {
+    try {
+      this.isPageLoading.set(false);
+    } catch (err) {
+      //...
+    }
+  }, 1024);
+});
+
 Template.game.helpers({
   isLoading() {
     return Template.instance().isLoading.get();
+  },
+  isPageLoading() {
+    return Template.instance().isPageLoading.get();
   },
   currentQuestionNum() {
     return `${app.activeQuizQuestion.get() + 1}`;
@@ -104,7 +118,21 @@ Template.game.events({
       const next = questionNum + 1;
 
       if (next < quiz.questions.length) {
-        app.activeQuizQuestion.set(next);
+        template.isPageLoading.set(true);
+        setTimeout(() => {
+          try {
+            app.activeQuizQuestion.set(next);
+            template.isPageLoading.set(false);
+          } catch (err) {
+            //...
+          }
+
+          setTimeout(() => {
+            document.getElementById('progressbar').scrollIntoView({
+              behavior: 'smooth'
+            });
+          }, 256);
+        }, 1024);
       } else {
         FlowRouter.go('results', { quizId: `${quiz.id}` });
       }
