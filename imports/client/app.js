@@ -29,6 +29,7 @@ const app = {
 
     for await (const qid of quizIds) {
       const quiz = await app.contract.get_quiz({ quiz_id: qid });
+      quiz._id = `${quiz.id}`;
       quiz.totalPrizesQty = 0;
 
       if (quiz.status === 'InProgress') {
