@@ -6,7 +6,7 @@
     {{/with}}
 
     <div class="progress">
-      <div class="progress-bar bg-success" role="progressbar" style="width: {{progressBarPercentage}}%;" aria-valuenow={{progressBarPercentage}} aria-valuemin="0" aria-valuemax={{currentQuiz.questions.length}}>
+      <div class="progress-bar bg-success" role="progressbar" style="width:{{progressBarPercentage}}%" aria-valuenow="{{currentQuestionNum}}" aria-valuemin="0" aria-valuemax="{{currentQuiz.questions.length}}">
         Questions: {{currentQuestionNum}}/{{currentQuiz.questions.length}}
       </div>
     </div>
@@ -50,7 +50,7 @@
     {{/with}}
   </div>
 
-  <div class="sticky-bottom bg-light pt-3 pb-5 text-center mt-3">
+  <div class="sticky-bottom bg-light pt-3 pb-4 text-center mt-3 game-submit-box">
     <button type="button" class="btn btn-primary btn-lg {{#if isLoading}}disabled{{/if}}" disabled="{{#if isLoading}}disabled{{/if}}" data-submit-answer>
       {{#if isLoading}}
         &nbsp; <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;

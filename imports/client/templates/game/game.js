@@ -21,7 +21,7 @@ Template.game.helpers({
     return Template.instance().isLoading.get();
   },
   currentQuestionNum() {
-    return `${app.activeQuizQuestion.get()}`;
+    return `${app.activeQuizQuestion.get() + 1}`;
   },
   currentQuiz() {
     return Template.instance().quiz;
@@ -77,7 +77,7 @@ Template.game.events({
     let textAnswer;
     if (question.question.kind === 'OneChoice') {
       answer.push(parseInt(template.$('input[name="oneof"]:checked').val()));
-      if (!answer?.[0]) {
+      if (!`${answer?.[0]}`) {
         return false;
       }
     } else if (question.question.kind === 'MultipleChoice') {
@@ -92,6 +92,7 @@ Template.game.events({
     }
 
     template.isLoading.set(true);
+
     try {
       await app.contract.send_answer({
         quiz_id: quiz.id,
