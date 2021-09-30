@@ -12,6 +12,7 @@ Template.home.onCreated(function () {
   this.selectedQuiz = new ReactiveVar(false);
   this.noQuizzesAvailable = new ReactiveVar(false);
   this.showLines = new ReactiveVar(PAGINATE_BY);
+  this.isJoining = new ReactiveVar(false);
 
   this.autorun(async (comp) => {
     const user = app.user.get();
@@ -39,6 +40,9 @@ Template.home.helpers({
   },
   noQuizzesAvailable() {
     return Template.instance().noQuizzesAvailable.get();
+  },
+  isJoining() {
+    return Template.instance().isJoining.get();
   }
 });
 
@@ -64,11 +68,13 @@ Template.home.events({
     template.selectedQuiz.set(false);
     return false;
   },
-  async 'click [data-start-quiz]'(e) {
+  async 'click [data-start-quiz]'(e, template) {
     e.preventDefault();
-    const game = await app.contract.get_game({ quiz_id: this.id, account_id: app._account.accountId });
+    template.isJoining.set(true);
 
+    const game = await app.contract.get_game({ quiz_id: this.id, account_id: app._account.accountId });
     let questionNo = 0;
+
     if (!game) {
       await app.contract.start_game({ quiz_id: this.id });
     } else {
