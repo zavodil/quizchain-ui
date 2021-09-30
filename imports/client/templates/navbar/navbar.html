@@ -7,8 +7,8 @@
       </a>
       {{#if appUser}}
         <div class="d-flex">
-          <a href="{{pathFor 'profile'}}">
-            <img class="rounded-circle" width="28" height="28" src="/images/avatar-placeholder.png">
+          <a class="btn {{#unless isActiveRoute 'profile'}}btn-dark{{else}}btn-primary disabled{{/unless}} btn-round fw-bold" href="{{pathFor 'profile'}}" title="Account Settings">
+            {{usernameFirstLetter}}
           </a>
         </div>
       {{/if}}
