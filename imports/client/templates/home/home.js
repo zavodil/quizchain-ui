@@ -10,12 +10,17 @@ const PAGINATE_BY = 3;
 
 Template.home.onCreated(function () {
   this.selectedQuiz = new ReactiveVar(false);
+  this.noQuizzesAvailable = new ReactiveVar(false);
   this.showLines = new ReactiveVar(PAGINATE_BY);
 
-  this.autorun((comp) => {
+  this.autorun(async (comp) => {
     const user = app.user.get();
     if (user) {
-      app.fetchQuizData();
+      await app.fetchQuizData();
+      const quizData = app.getQuizData();
+      if (!quizData?.length) {
+        this.noQuizzesAvailable.set(true);
+      }
       comp.stop();
     }
   });
@@ -31,6 +36,9 @@ Template.home.helpers({
   },
   selectedQuiz() {
     return Template.instance().selectedQuiz.get();
+  },
+  noQuizzesAvailable() {
+    return Template.instance().noQuizzesAvailable.get();
   }
 });
 

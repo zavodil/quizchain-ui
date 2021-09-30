@@ -16,9 +16,13 @@
       </ul>
     {{else}}
       <div class="text-center my-5 py-5">
-        <div class="spinner-grow text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+        {{#if noQuizzesAvailable}}
+          <h2 class="lead text-muted">No quizzes available at the moment.<br>Please, visit this page later</h2>
+        {{else}}
+          <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        {{/if}}
       </div>
     {{/if}}
 
