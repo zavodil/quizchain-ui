@@ -29,7 +29,7 @@ Template.leaderboard.onCreated(function () {
     this.isLoading.set(false);
 
     this.timer = setInterval(async () => {
-      stats = await app.contract.gets_quiz_stats({ quiz_id: this.quizId, from_index: 0, limit: 20 });
+      stats = await app.contract.gets_quiz_stats({ quiz_id: this.quizId, from_index: 0, limit: 100 });
       if (stats) {
         this.stats.set(stats);
       }
