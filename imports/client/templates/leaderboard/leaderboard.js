@@ -33,7 +33,7 @@ Template.leaderboard.onCreated(function () {
       if (stats) {
         this.stats.set(stats);
       }
-    }, 15000);
+    }, 20000);
   })();
 });
 
