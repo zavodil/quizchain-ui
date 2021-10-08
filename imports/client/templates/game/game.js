@@ -91,13 +91,19 @@ Template.game.events({
     let textAnswer;
     if (question.question.kind === 'OneChoice') {
       answer.push(parseInt(template.$('input[name="oneof"]:checked').val()));
-      if (!`${answer?.[0]}`) {
+      if (isNaN(answer?.[0])) {
         return false;
       }
     } else if (question.question.kind === 'MultipleChoice') {
+      let qty = 0;
       template.$('input[name="manyfrom"]:checked').each(function () {
         answer.push(parseInt(this.value));
+        qty++;
       });
+
+      if (qty === 0) {
+        return false;
+      }
     } else if (question.question.kind === 'Text') {
       answer = void 0;
       textAnswer = template.$('input[name="textfield"]').val().trim().toLowerCase();
