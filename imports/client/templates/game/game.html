@@ -60,8 +60,11 @@
 
   <div class="sticky-bottom bg-light pt-3 pb-4 text-center mt-3 game-submit-box">
     <button type="button" class="btn btn-primary btn-lg {{#if isLoading}}disabled{{/if}}" disabled="{{#if isLoading}}disabled{{/if}}" data-submit-answer>
-      {{#if isLoading}}
+      {{#if isSubmitButtonInactive}}
         &nbsp; <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;
+        {{#if isNextQuestionLoading}}
+          Pending...
+        {{/if}}
       {{else}}
         Submit
       {{/if}}

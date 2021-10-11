@@ -1,7 +1,19 @@
 <template name="myProfile">
-  <h1 class="lead text-start py-0">Settings<br><span class="text-muted">{{appUser.accountId}}</span></h1>
-
-  <div class="py-4 text-center">
-    <button data-logout type="button" class="btn btn-danger">logout</button>
+  <div style="display: flex; justify-content: space-between;">
+    <div>
+      <h1 class="lead text-start py-0">Settings</h1>
+      <p>
+        Account: <a href="https://explorer.testnet.near.org/accounts/{{appUser.accountId}}" target="_blank" class="text-muted">{{appUser.accountId}}</a>
+      </p>
+    </div>
+    <div>
+      <button data-logout type="button" class="btn btn-danger">logout</button>
+    </div>
   </div>
+
+
+  <div class="d-grid gap-2 pt-3">
+    <a href="{{pathFor 'create'}}" class="btn btn-lg btn-outline-primary">Create Quiz</a>
+  </div>
+
 </template>

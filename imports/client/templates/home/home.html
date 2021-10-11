@@ -6,7 +6,10 @@
         {{#each quizData}}
           <a data-select-quiz href="#" class="list-group-item d-flex justify-content-between align-items-center {{#if compare selectedQuiz.id '===' id}}active{{/if}}">
             {{compare title '||' id}}
-            <span class="badge bg-dark rounded-pill">{{totalAvailableRewards}} NEAR</span>
+            {{#if language}}
+              ({{language}})
+            {{/if}}
+            <span class="badge bg-dark rounded-pill">{{totalAvailableRewards}} {{tokenTicker}}</span>
           </a>
         {{/each}}
 
@@ -33,24 +36,39 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">{{title}}</h5>
+              <a href="{{pathFor 'leaderboard' quizId=_id}}">
+                <span class="badge rounded-pill bg-info ms-lg-3">Quiz stats</span>
+              </a>
               <button data-deselect-quiz type="button" class="btn-close" aria-label="Close"></button>
             </div>
 
             <div class="modal-body bg-light border-top">
-              <p>{{description}}</p>
-              <p>Be the first of {{totalPrizesQty}} participants to answer correctly all questions to win stake of {{totalAvailableRewards}} NEAR</p>
+              <div class="border-bottom">
+                <p>
+                  {{#if language}}
+                  Language: {{language}}.
+                  {{/if}}
+
+                  {{#if owner_id}}
+                  Author: {{owner_id}}.
+                  {{/if}}
+                </p>
+                <p>{{description}}</p>
+              </div>
+
+              <div class="mt-2">Be the first of {{totalPrizesQty}} participants to answer correctly all questions to win stake of
+                {{totalAvailableRewards}} {{tokenTicker}}</div>
             </div>
 
-            <div class="modal-footer border-top">
-              <a data-start-quiz href="#" class="btn btn-lg btn-success {{#if isJoining}}disabled{{/if}}" disabled="{{#if isJoining}}disabled{{/if}}">
-                {{#if isJoining}}
-                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                {{else}}
-                  Join
-                {{/if}}
-              </a>
-              or check
-              <a href="{{pathFor 'leaderboard' quizId=id}}">stats</a>
+            <div class="modal-footer">
+                <a data-start-quiz href="#" class="btn btn-lg btn-success {{#if isJoining}}disabled{{/if}}"
+                   disabled="{{#if isJoining}}disabled{{/if}}">
+                  {{#if isJoining}}
+                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                  {{else}}
+                    Start
+                  {{/if}}
+                </a>
             </div>
           </div>
         </div>
@@ -79,6 +97,6 @@
   {{/if}}
 
   <footer class="py-4 mt-5 border-top text-center fw-bold">
-    Powered by <a href="https://near.org/" title="NEAR Protocol" target="_blank" rel="noopener nofollow">NEAR</a>
+    Powered by <a href="https://near.org/" title="NEAR Protocol" target="_blank" rel="noopener nofollow">NEAR Blockchain</a>
   </footer>
 </template>

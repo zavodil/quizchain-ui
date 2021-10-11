@@ -1,8 +1,8 @@
-import { ReactiveVar } from 'meteor/reactive-var';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { Template } from 'meteor/templating';
+import {ReactiveVar} from 'meteor/reactive-var';
+import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
+import {Template} from 'meteor/templating';
 
-import { app } from '/imports/client/app.js';
+import {app} from '/imports/client/app.js';
 
 import './game.html';
 import './game.css';
@@ -10,6 +10,7 @@ import './game.css';
 Template.game.onCreated(function () {
   this.isPageLoading = new ReactiveVar(false);
   this.isLoading = new ReactiveVar(false);
+  this.isNextQuestionLoading = new ReactiveVar(false);
   this.quiz = app.activeQuiz.get();
 
   if (!this.quiz) {
@@ -30,6 +31,12 @@ Template.game.onRendered(function () {
 Template.game.helpers({
   isLoading() {
     return Template.instance().isLoading.get();
+  },
+  isNextQuestionLoading() {
+    return Template.instance().isNextQuestionLoading.get();
+  },
+  isSubmitButtonInactive() {
+    return (Template.instance().isNextQuestionLoading.get() || Template.instance().isLoading.get());
   },
   isPageLoading() {
     return Template.instance().isPageLoading.get();
@@ -62,7 +69,11 @@ Template.game.helpers({
       return 0;
     }
 
-    const maxValue = quiz.questions.length - 1;
+    if (quiz.questions.length === 1) {
+      return 100;
+    }
+
+    const maxValue = quiz.questions.length;
     if (questionNumber > maxValue) {
       return 100;
     }
@@ -91,16 +102,26 @@ Template.game.events({
     let textAnswer;
     if (question.question.kind === 'OneChoice') {
       answer.push(parseInt(template.$('input[name="oneof"]:checked').val()));
-      if (!`${answer?.[0]}`) {
+      if (isNaN(answer?.[0])) {
         return false;
       }
     } else if (question.question.kind === 'MultipleChoice') {
+      let qty = 0;
       template.$('input[name="manyfrom"]:checked').each(function () {
         answer.push(parseInt(this.value));
+        qty++;
       });
+
+      if (qty === 0) {
+        return false;
+      }
     } else if (question.question.kind === 'Text') {
       answer = void 0;
       textAnswer = template.$('input[name="textfield"]').val().trim().toLowerCase();
+
+      if (!textAnswer.length) {
+        return false;
+      }
     } else {
       return false;
     }
@@ -108,16 +129,18 @@ Template.game.events({
     template.isLoading.set(true);
 
     try {
-      await app.contract.send_answer({
-        quiz_id: quiz.id,
-        question_id: question.id,
-        question_option_ids: answer,
-        question_option_text: textAnswer
-      });
-
       const next = questionNum + 1;
 
       if (next < quiz.questions.length) {
+        template.isNextQuestionLoading.set(true);
+
+        app.contract.send_answer({
+          quiz_id: quiz.id,
+          question_id: question.id,
+          question_option_ids: answer,
+          question_option_text: textAnswer
+        }).then(() => template.isNextQuestionLoading.set(false));
+
         template.isPageLoading.set(true);
         setTimeout(() => {
           try {
@@ -134,7 +157,14 @@ Template.game.events({
           }, 256);
         }, 1024);
       } else {
-        FlowRouter.go('results', { quizId: `${quiz.id}` });
+        await app.contract.send_answer({
+          quiz_id: quiz.id,
+          question_id: question.id,
+          question_option_ids: answer,
+          question_option_text: textAnswer
+        });
+
+        FlowRouter.go('results', {quizId: quiz._id});
       }
     } catch (err) {
       console.error('[data-submit-answer] [send_answer] ERROR:', err);

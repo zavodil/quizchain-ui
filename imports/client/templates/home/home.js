@@ -72,23 +72,28 @@ Template.home.events({
     e.preventDefault();
     template.isJoining.set(true);
 
-    const game = await app.contract.get_game({ quiz_id: this.id, account_id: app._account.accountId });
-    let questionNo = 0;
+    try {
+      const game = await app.contract.get_game({ quiz_id: this.id, account_id: app._account.accountId });
+      let questionNo = 0;
 
-    if (!game) {
-      await app.contract.start_game({ quiz_id: this.id });
-    } else {
-      questionNo = game.answers_quantity;
+      if (!game) {
+        await app.contract.start_game({ quiz_id: this.id });
+      } else {
+        questionNo = game.answers_quantity;
 
-      if (questionNo >= this.total_questions) {
-        FlowRouter.go('results', { quizId: `${this.id}` });
-        return false;
+        if (questionNo >= this.total_questions) {
+          FlowRouter.go('results', { quizId: this._id });
+          return false;
+        }
       }
-    }
 
-    app.activeQuiz.set(this);
-    app.activeQuizQuestion.set(questionNo);
-    FlowRouter.go('game', { quizId: `${this.id}` });
+      app.activeQuiz.set(this);
+      app.activeQuizQuestion.set(questionNo);
+      FlowRouter.go('game', { quizId: this._id });
+    } catch (err) {
+      alert(err?.toString?.() || 'Unexpected error occurred. Most probably your balance is too low for storage or transaction.');
+      template.isJoining.set(false);
+    }
     return false;
   }
 });

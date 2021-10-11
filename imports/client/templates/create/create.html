@@ -1,0 +1,182 @@
+<template name="create">
+  <h1 class="lead text-start py-0">Create new quiz</h1>
+
+  <div class="py-4">
+    <div class="form-group row">
+
+      <fieldset id="main-fieldset">
+        <div class="form-group">
+          <label for="quiz-title" class="form-label mt-4">Title</label>
+          <input type="text" class="form-control" id="quiz-title" placeholder="Quiz Title" autocomplete="off" autocorrect="off"
+                 autocapitalize="off">
+        </div>
+
+        <div class="form-group">
+          <label for="quiz-description" class="form-label mt-4">Description</label>
+          <textarea class="form-control" id="quiz-description" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="quiz-language" class="form-label mt-4">Select Language</label>
+          <select class="form-select" id="quiz-language">
+            <option value="English">English</option>
+            <option value="Russian">Russian</option>
+            <option value="Vietnamese">Vietnamese</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Spanish">Spanish</option>
+            <option value="Hindi">Hindi</option>
+            <option value="German">German</option>
+            <option value="French">French</option>
+            <option value="Portuguese">Portuguese</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <fieldset class="form-group">
+            <legend class="form-label mt-4">Quiz Finality Type</legend>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="quiz-finality-type" value="Direct" checked="">
+                  Direct (Winners get rewards immediately)
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="quiz-finality-type" value="DelayedReveal">
+                Delayed (Winners get rewards after the reveal of answers)
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="form-group d-inline-block">
+          <legend class="form-label mt-3 mb-0">Questions</legend>
+        </div>
+
+        <div class="template question-box p-3 mt-2 mb-3 visually-hidden">
+          <div class="form-group">
+            <label class="form-label">Question #<span class="question-index"></span></label>
+            <input type="text" class="form-control input-item" name="question[-].content" placeholder="Question text" autocomplete="off" autocorrect="off"
+                   autocapitalize="off">
+          </div>
+
+          <label class="form-label mt-2">Answer type</label>
+          <fieldset class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input data-answer-type-change type="radio" class="form-check-input input-item" name="question[-].kind" value="OneChoice" checked="checked">
+                One Choice
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input data-answer-type-change type="radio" class="form-check-input input-item" name="question[-].kind" value="MultipleChoice">
+                Multiple Choice
+              </label>
+            </div>
+            <div class="form-check disabled">
+              <label class="form-check-label">
+                <input data-answer-type-change type="radio" class="form-check-input input-item" name="question[-].kind" value="Text">
+                Text
+              </label>
+            </div>
+          </fieldset>
+
+          <label class="form-label mt-2">Question Options:</label>
+          <fieldset class="form-group one-choice">
+            <div class="form-check option-template visually-hidden">
+
+                <input data-option-change type="radio" class="form-check-input input-item option-answer option-answer-radio mt-2" name="question[-].answers" data-kind="OneChoice">
+                <input data-option-change type="checkbox" class="form-check-input input-item option-answer option-answer-checkbox mt-2 visually-hidden" name="question[-].answers" data-kind="MultipleChoice">
+                <input type="text" class="form-control input-item option-item mb-1" name="question[-].option[-]" value="" autocomplete="off" autocorrect="off"
+                       autocapitalize="off">
+
+
+            </div>
+            <div class="type-non-text">
+              <div class="options"></div>
+            </div>
+            <div class="type-text visually-hidden">
+              <input type="text" class="form-control input-item option-item mb-1" name="question[-].option[-]" value="" autocomplete="off" autocorrect="off"
+                     autocapitalize="off" placeholder="Enter Correct Answer">
+            </div>
+          </fieldset>
+
+          <div>
+            <button data-add-option type="button" class="btn btn-primary btn-add-option mt-3">Add Question Option</button>
+          </div>
+
+        </div>
+
+        <div id="all-questions"></div>
+
+        <div>
+          <button data-add-question type="button" class="btn btn-primary mt-0">Add Question</button>
+        </div>
+
+        <div class="form-group">
+          <legend class="form-label mt-3 mb-0">Rewards</legend>
+          <div>
+            <label class="form-label mt-1">Token for rewards</label>
+            <select data-select-token-change class="form-select add-reward-select-token" name="add-reward-select-token">
+              {{#each tokens}}
+                <option value="{{contract}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="add-reward visually-hidden pt-2">
+            <span class="reward-index"></span>
+            <input data-add-reward-change type="text" class="form-control half add-reward-amount" placeholder="Reward Amount" autocomplete="off" autocorrect="off"
+                   autocapitalize="off">
+          </div>
+
+          <div class="rewards"></div>
+          <div class="total-rewards visually-hidden mt-2">
+            Total Rewards: <span class="total-rewards-amount"></span> <span class="total-rewards-token-id"></span>
+            <span class="service-fee-hint">(Service Fee: 1%, not more than 10 NEAR)</span>
+          </div>
+
+          <div>
+            <button data-add-reward type="button" class="btn btn-primary btn-add-option mt-2">Add Reward</button>
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <fieldset class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="restart-allowed">
+              <label class="form-check-label" for="restart-allowed">
+                Quiz restart allowed
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <hr />
+
+        <button data-preview-create-quiz type="button" class="btn btn-primary mt-2" id="preview-create">Create Quiz</button>
+      </fieldset>
+
+        <div class="visually-hidden" id="create-quiz-block">
+          <legend class="form-label mt-3 mb-0">Save this data before to proceed!</legend>
+          <span>You will not be able to manage your quiz otherwise</span>
+          <div class="form-group reveal-answers-block visually-hidden">
+            <label for="quiz-description" class="form-label mt-2">Data for answer reveal:</label>
+            <textarea class="form-control" id="reveal-answers" rows="3"></textarea>
+          </div>
+
+          <div class="form-group visually-hidden" id="reveal-secret-hash-block">
+            <label for="quiz-description" class="form-label mt-4">Secret hash:</label>
+            <label for="quiz-description">You will have to publish this hash to enable reward claims</label>
+            <input type="text" class="form-control" id="reveal-secret-hash">
+          </div>
+
+          <button data-create-quiz type="button" class="btn btn-primary mt-2">Create Quiz</button>
+        </div>
+
+
+    </div>
+
+  </div>
+</template>

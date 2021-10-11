@@ -37,6 +37,18 @@ Promise.all([
     }
   },
 }, {
+  pathDef: '/answers/:quizId',
+  options: {
+    title: 'Answers',
+    name: 'answers',
+    waitOn() {
+      return import('/imports/client/templates/answers/answers');
+    },
+    action(params) {
+      this.render('mainLayout', 'answers', { params });
+    }
+  },
+}, {
   pathDef: '/results/:quizId',
   options: {
     title: 'Results',
@@ -46,6 +58,18 @@ Promise.all([
     },
     action(params) {
       this.render('mainLayout', 'results', { params });
+    }
+  },
+}, {
+  pathDef: '/Create',
+  options: {
+    title: 'Create Quiz',
+    name: 'create',
+    waitOn() {
+      return import('/imports/client/templates/create/create');
+    },
+    action() {
+      this.render('mainLayout', 'create');
     }
   },
 }, {
