@@ -6,30 +6,51 @@
         </div>
       </div>
   {{else}}
-    {{#if reward}}
-      <h2 class="lead">Congrats!<br>You won {{reward.amountInt}} NEAR!</h2>
-      
-      <img src="/images/img-result.svg" class="img-fluid my-5" alt="Congrats!">
-
-      {{#unless reward.claimed}}
-        <div class="d-grid gap-2">
-          <button data-claim type="button" class="btn btn-lg btn-primary">
-            {{#if claimProcessing}}
-              &nbsp; <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;
-            {{else}}
-              Claim Prize
-            {{/if}}
-          </button>
-        </div>
-      {{/unless}}
+    {{#if delayed}}
+      <h2 class="lead">Your submission is recorded!</h2>
+      <h4 class="lead">Please come back and check you score after quiz author will reveal the secret hash.</h4>
     {{else}}
-      <h2 class="lead">Sorry, some of the answers were wrong. Try again in other quiz</h2>
+      {{#if reward}}
+        <h2 class="lead">Congrats!<br>You won {{reward.amountInt}} {{reward.tokenTicker}}!</h2>
 
-      <img src="/images/img-result.svg" class="img-fluid my-5 invisible" alt="Sorry...">
+        <img src="/images/img-result.svg" class="img-fluid my-5" alt="Congrats!">
+
+        {{#unless reward.claimed}}
+          <div class="d-grid gap-2">
+            <button data-claim type="button" class="btn btn-lg btn-primary">
+              {{#if claimProcessing}}
+                &nbsp; <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;
+              {{else}}
+                Claim Prize
+              {{/if}}
+            </button>
+          </div>
+        {{/unless}}
+      {{else}}
+        <div class="mb-5">
+          <h2 class="lead">Sorry, some answers were wrong</h2>
+
+          {{#if quiz.restart_allowed}}
+              <div class="text-center">
+                <h4>Try again if you want!</h4>
+
+                  <button data-restart-quiz type="button" class="btn btn-lg btn-primary mt-2" aria-label="Restart">
+                    {{#if isRestarting}}
+                      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;
+                    {{else}}
+                      Restart the quiz
+                    {{/if}}
+                  </button>
+              </div>
+          {{else}}
+            <h2 class="lead">Try again in other quiz</h2>
+          {{/if}}
+        </div>
+      {{/if}}
     {{/if}}
 
     <div class="d-grid gap-2 pt-3">
-      <a href="{{pathFor 'leaderboard' quizId=params.quizId}}" class="btn btn-lg btn-outline-primary">Leader-board</a>
+      <a href="{{pathFor 'leaderboard' quizId=params.quizId}}" class="btn btn-lg btn-outline-primary">Leaderboard</a>
     </div>
   {{/if}}
 </template>

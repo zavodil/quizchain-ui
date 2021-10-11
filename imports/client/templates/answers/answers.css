@@ -1,0 +1,9 @@
+.button-area {
+    display: flex;
+    justify-content: center;
+    margin: 2em;
+}
+
+#join-button {
+    font-size: 2em;
+}

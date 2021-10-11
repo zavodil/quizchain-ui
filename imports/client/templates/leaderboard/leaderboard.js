@@ -5,20 +5,26 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './leaderboard.css';
 import './leaderboard.html';
+const VIEW_LIMIT = 20;
 
 Template.leaderboard.onCreated(function () {
   this.isLoading = new ReactiveVar(true);
   this.stats = new ReactiveVar(true);
   this.quizId = parseInt(this.data.params.quizId);
   let stats;
+  let newStats;
 
   (async () => {
-    stats = await app.contract.gets_quiz_stats({ quiz_id: this.quizId, from_index: 0, limit: 20 });
-
-    if (!stats) {
-      FlowRouter.go('home');
-    } else {
-      this.stats.set(stats);
+    let index = 0;
+    while(stats === undefined || newStats.length === VIEW_LIMIT) {
+      newStats = await app.contract.gets_quiz_stats({quiz_id: this.quizId, from_index: index * VIEW_LIMIT, limit: VIEW_LIMIT});
+      if (!newStats) {
+        FlowRouter.go('home');
+      } else {
+        stats = stats ? stats.concat(newStats) : newStats;
+        this.stats.set(stats.sort((a, b) => b.answers_quantity - a.answers_quantity));
+      }
+      index ++;
     }
 
     this.quiz = await app.contract.get_quiz({ quiz_id: this.quizId });
