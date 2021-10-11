@@ -1,5 +1,11 @@
-Если по командам, то после входа на сервер:
+Перед обновлением менять nginx.cong
+По веткам:
+- Production — master
+- Testnet — testnet
 
+===
+
+Если по командам, то после входа на сервер:
 cd /home/appuser/
 
 # deploy production
@@ -8,8 +14,7 @@ cd /home/appuser/
 # deploy testnet
 ./deploy.sh -bmpr near-quiz-chain
 
-По веткам:
-- Production — master
-- Testnet — testnet
+
 
 Если были изменение в nginx.conf нужно добавить флаг -n, например:
+./deploy.sh -bmprn near-quiz-chain-main
