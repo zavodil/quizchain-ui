@@ -18,3 +18,4 @@ cd /home/appuser/
 
 Если были изменение в nginx.conf нужно добавить флаг -n, например:
 ./deploy.sh -bmprn near-quiz-chain-main
+./deploy.sh -bmprn near-quiz-chain

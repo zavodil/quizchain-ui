@@ -54,11 +54,12 @@
         </div>
 
         <div class="template question-box p-3 mt-2 mb-3 visually-hidden">
-          <div class="form-group">
+          <div class="form-group d-flex justify-content-between align-items-center">
             <label class="form-label">Question #<span class="question-index"></span></label>
-            <input type="text" class="form-control input-item" name="question[-].content" placeholder="Question text" autocomplete="off" autocorrect="off"
-                   autocapitalize="off">
+            <button data-remove-question type="button" class="badge btn rounded-pill bg-danger remove-reward">X</button>
           </div>
+          <input type="text" class="form-control input-item" name="question[-].content" placeholder="Question text"
+                 autocomplete="off" autocorrect="off" autocapitalize="off">
 
           <label class="form-label mt-2">Answer type</label>
           <fieldset class="form-group">
@@ -85,13 +86,10 @@
           <label class="form-label mt-2">Question Options:</label>
           <fieldset class="form-group one-choice">
             <div class="form-check option-template visually-hidden">
-
                 <input data-option-change type="radio" class="form-check-input input-item option-answer option-answer-radio mt-2" name="question[-].answers" data-kind="OneChoice">
                 <input data-option-change type="checkbox" class="form-check-input input-item option-answer option-answer-checkbox mt-2 visually-hidden" name="question[-].answers" data-kind="MultipleChoice">
                 <input type="text" class="form-control input-item option-item mb-1" name="question[-].option[-]" value="" autocomplete="off" autocorrect="off"
                        autocapitalize="off">
-
-
             </div>
             <div class="type-non-text">
               <div class="options"></div>
@@ -125,10 +123,13 @@
             </select>
           </div>
 
-          <div class="add-reward visually-hidden pt-2">
+          <div class="add-reward visually-hidden pt-2 d-flex justify-content-between align-items-center">
             <span class="reward-index"></span>
-            <input data-add-reward-change type="text" class="form-control half add-reward-amount" placeholder="Reward Amount" autocomplete="off" autocorrect="off"
+            <input data-add-reward-change type="text" class="form-control half add-reward-amount me-auto"
+                   placeholder="Reward Amount" autocomplete="off" autocorrect="off"
                    autocapitalize="off">
+
+            <button data-remove-reward type="button" class="badge btn rounded-pill bg-danger remove-reward">X</button>
           </div>
 
           <div class="rewards"></div>

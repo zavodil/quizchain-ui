@@ -61,7 +61,7 @@ Promise.all([
     }
   },
 }, {
-  pathDef: '/Create',
+  pathDef: '/create',
   options: {
     title: 'Create Quiz',
     name: 'create',

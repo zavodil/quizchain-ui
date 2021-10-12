@@ -6,7 +6,7 @@ import { Template } from 'meteor/templating';
 import './home.css';
 import './home.html';
 
-const PAGINATE_BY = 3;
+const PAGINATE_BY = 7;
 
 Template.home.onCreated(function () {
   this.selectedQuiz = new ReactiveVar(false);

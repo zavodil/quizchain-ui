@@ -143,9 +143,32 @@ Template.create.events({
     const template = allRewards[0];
     let reward = template.cloneNode(true);
 
+    reward.setAttribute('index', allRewards.length);
     reward.classList.remove('visually-hidden');
     reward.getElementsByClassName('reward-index')[0].textContent = allRewards.length + '.';
     parent.getElementsByClassName('rewards')[0].appendChild(reward);
+    return false;
+  },
+  'click [data-remove-question]'(e) {
+    e.preventDefault();
+    let node = e.target.closest('.question-box');
+    let parent = document.getElementById('all-questions');
+    node.parentNode.removeChild(node);
+
+    const questions = parent.getElementsByClassName('question-box');
+
+    for (let i = 0; i < questions.length; i++) {
+      questions[i].getElementsByClassName('question-index')[0].textContent = (i + 1).toString();
+    }
+
+    return false;
+  },
+  'click [data-remove-reward]'(e) {
+    e.preventDefault();
+    let node = e.target.closest('.add-reward');
+    let parent = e.target.closest('.form-group');
+    node.parentNode.removeChild(node);
+    recalculateTotalReward(parent);
     return false;
   },
   async 'click [data-create-quiz]'(e) {
@@ -332,6 +355,7 @@ function recalculateTotalReward(parent) {
   let total = 0;
   for (let i = 0; i < rewards.length; i++) {
     total += parseInt(rewards[i].value);
+    rewards[i].closest('.add-reward').getElementsByClassName('reward-index')[0].textContent = (i + 1) + '.';
   }
 
   if (total > 0) {

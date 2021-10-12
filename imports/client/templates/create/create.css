@@ -19,3 +19,7 @@
 .add-reward span{
     padding-right: 0.5rem;
 }
+
+.remove-reward{
+    color: #FFF !important;
+}
