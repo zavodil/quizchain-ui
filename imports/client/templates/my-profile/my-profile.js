@@ -101,9 +101,14 @@ Template.myProfile.events({
           quiz_id: quizId,
           hash: successHash
         }).then((users) => {
-          let html = `<div class="mt-2">Total users with the same hash: ${users.length}</div>`;
-          if (users.length) {
-            html += '<ul>' + users.map(user => `<li>${user}</li>`) + '</ul>';
+          let html;
+          if (users) {
+            html = `<div class="mt-2">Total users with the same hash: ${users.length}</div>`;
+            if (users.length) {
+              html += '<ul>' + users.map(user => `<li>${user}</li>`) + '</ul>';
+            }
+          } else {
+            html = '<div class="mt-2">No winners yet...</div>';
           }
           parent.getElementsByClassName('users-with-same-hash')[0].innerHTML = html;
           template.isPendingOperation.set(false);

@@ -344,7 +344,8 @@ function recalculateTotalReward(parent) {
     parent.getElementsByClassName('total-rewards')[0].classList.remove('visually-hidden');
     parent.getElementsByClassName('total-rewards-amount')[0].textContent = total + Math.min(total * 0.01, 10);
     let token = parent.getElementsByClassName('add-reward-select-token')[0].value;
-    parent.getElementsByClassName('total-rewards-token-id')[0].textContent = token;
+    let tokenTicker = app.tokens_account_ids[token || ''].name;
+    parent.getElementsByClassName('total-rewards-token-id')[0].textContent = tokenTicker;
     if (token === 'NEAR') {
       parent.getElementsByClassName('service-fee-hint')[0].classList.remove('visually-hidden');
     } else {
