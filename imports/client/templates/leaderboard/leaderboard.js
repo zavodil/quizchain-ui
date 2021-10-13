@@ -30,25 +30,25 @@ Template.leaderboard.onCreated(function () {
     let stats = undefined;
     let newStats = [];
     let index = 0;
-    while (stats === undefined || newStats.length === VIEW_LIMIT) {
+    while (stats === undefined || (newStats !== null && newStats.length === VIEW_LIMIT)) {
       newStats = await app.contract.gets_quiz_stats({
         quiz_id: this.quizId,
         from_index: index * VIEW_LIMIT,
         limit: VIEW_LIMIT
       });
-      if (!newStats) {
-        FlowRouter.go('home');
-      } else {
-        if (this.quiz.status === 'Finished') {
-          for (let i = 0; i < newStats.length; i++) {
-            if (winners.hasOwnProperty(newStats[i].player_id)) {
-              newStats[i].reward = winners[newStats[i].player_id] + ' ' + this.quiz.tokenTicker;
-            }
+      if (this.quiz.status === 'Finished') {
+        for (let i = 0; i < newStats.length; i++) {
+          if (winners.hasOwnProperty(newStats[i].player_id)) {
+            newStats[i].reward = winners[newStats[i].player_id] + ' ' + this.quiz.tokenTicker;
           }
         }
-        stats = stats ? stats.concat(newStats) : newStats;
-        this.stats.set(stats.sort((a, b) => b.answers_quantity - a.answers_quantity));
       }
+      stats = stats ? stats.concat(newStats) : newStats;
+      if (stats !== null && stats.length) {
+        stats = stats.sort((a, b) => b.answers_quantity - a.answers_quantity);
+      }
+      this.stats.set(stats);
+
       index++;
     }
 
@@ -58,25 +58,25 @@ Template.leaderboard.onCreated(function () {
       stats = undefined;
       newStats = [];
       index = 0;
-      while (stats === undefined || newStats.length === VIEW_LIMIT) {
+      while (stats === undefined || (newStats !== null && newStats.length === VIEW_LIMIT)) {
         newStats = await app.contract.gets_quiz_stats({
           quiz_id: this.quizId,
           from_index: index * VIEW_LIMIT,
           limit: VIEW_LIMIT
         });
-        if (!newStats) {
-          FlowRouter.go('home');
-        } else {
-          if (this.quiz.status === 'Finished') {
-            for (let i = 0; i < newStats.length; i++) {
-              if (winners.hasOwnProperty(newStats[i].player_id)) {
-                newStats[i].reward = winners[newStats[i].player_id] + ' ' + this.quiz.tokenTicker;
-              }
+        if (this.quiz.status === 'Finished') {
+          for (let i = 0; i < newStats.length; i++) {
+            if (winners.hasOwnProperty(newStats[i].player_id)) {
+              newStats[i].reward = winners[newStats[i].player_id] + ' ' + this.quiz.tokenTicker;
             }
           }
-          stats = stats ? stats.concat(newStats) : newStats;
-          this.stats.set(stats.sort((a, b) => b.answers_quantity - a.answers_quantity));
         }
+        stats = stats ? stats.concat(newStats) : newStats;
+        if (stats !== null && stats.length) {
+          stats = stats.sort((a, b) => b.answers_quantity - a.answers_quantity);
+        }
+        this.stats.set(stats);
+
         index++;
       }
     }, 30000);
