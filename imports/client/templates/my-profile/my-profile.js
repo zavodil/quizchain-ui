@@ -105,7 +105,7 @@ Template.myProfile.events({
           if (users) {
             html = `<div class="mt-2">Total users with the same hash: ${users.length}</div>`;
             if (users.length) {
-              html += '<ul>' + users.map(user => `<li>${user}</li>`) + '</ul>';
+              html += '<ul>' + users.map(user => `<li>${user}</li>`).join('') + '</ul>';
             }
           } else {
             html = '<div class="mt-2">No winners yet...</div>';
