@@ -6,33 +6,98 @@
     </div>
   </div>
   {{else}}
-  <div style="display: flex; justify-content: space-between;">
-    <div>
+  <div class="d-flex justify-content-between">
+    <div class="me-auto">
       <h1 class="lead text-start py-0">Settings</h1>
       <p>
         Account: <a href="https://explorer.testnet.near.org/accounts/{{appUser.accountId}}" target="_blank"
                     class="text-muted">{{appUser.accountId}}</a>
       </p>
     </div>
-
-
+    <div class="ms-auto">
+      <button data-logout type="button" class="btn btn-danger">logout</button>
+    </div>
   </div>
 
   <div class="d-grid gap-2 pt-3">
     <a href="{{pathFor 'create'}}" class="btn btn-lg btn-outline-primary">Create New Quiz</a>
   </div>
 
-  <div class="form-group d-inline-block">
-    <legend class="form-label mt-3 mb-0">Quizzes I already created:</legend>
-  </div>
 
-  <div class="form-group pt-3">
+  {{#if isQuizzesByUser}}
+  <div class="form-group d-inline-block">
+    <legend class="form-label mt-3 mb-0">Quizzes I played:</legend>
+  </div>
+  {{/if}}
+
+  <div class="form-group pt-1">
     <ul class="list-group">
       {{#each quizzesByUser}}
       <li class="list-group-item">
         <div class="d-flex justify-content-between align-items-center">
           <div class="me-2">#{{id}}</div>
-          <div class="me-auto ms-2">{{title}}</div>
+          <div class="me-auto ms-2"><a href="{{pathFor 'quiz' quizId=id_str}}" class="quiz-link"><span>{{title}}</span></a></div>
+
+          <div class="badge-container ms-auto me-2">
+            <a href="{{pathFor 'leaderboard' quizId=id_str}}"><span class="badge rounded-pill bg-info">Stats</span></a>
+          </div>
+
+          {{#if compare status '===' 'Finished'}}
+            {{#if compare is_revealed_answers '===' true}}
+              <div class="badge-container me-2">
+                <a href="{{pathFor 'answers' quizId=id_str}}"><span class="badge rounded-pill bg-success">Answers</span></a>
+              </div>
+            {{/if}}
+          {{/if}}
+
+          {{#if myRewardClaimed}}
+            <div class="badge-container me-2">
+              <a href="{{pathFor 'quiz' quizId=id_str}}"><span class="badge rounded-pill bg-success">Amount claimed: {{myRewardClaimed}} {{tokenTicker}}</span></a>
+            </div>
+          {{/if}}
+
+          {{#if myRewardToClaim}}
+            <div class="badge-container me-2">
+              <a href="{{pathFor 'quiz' quizId=id_str}}"><span class="badge rounded-pill bg-success">Amount to claim: {{myRewardToClaim}} {{tokenTicker}}</span></a>
+            </div>
+          {{/if}}
+
+          <div class="badge-container">
+            {{#if status}}
+            {{#if compare status '===' 'Funded'}}
+            <span class="badge rounded-pill bg-dark">Funded</span>
+            {{/if}}
+            {{#if compare status '===' 'Locked'}}
+            <span class="badge rounded-pill bg-danger">Locked</span>
+            {{/if}}
+            {{#if compare status '===' 'InProgress'}}
+            <span class="badge rounded-pill bg-success">In Progress</span>
+            {{/if}}
+            {{#if compare status '===' 'Finished'}}
+            <span class="badge rounded-pill bg-info">Finished</span>
+            {{/if}}
+            {{/if}}
+          </div>
+        </div>
+
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  {{#if isQuizzesByOwner}}
+  <div class="form-group d-inline-block">
+    <legend class="form-label mt-3 mb-0">Quizzes I already created:</legend>
+  </div>
+  {{/if}}
+
+  <div class="form-group pt-1">
+    <ul class="list-group">
+      {{#each quizzesByOwner}}
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="me-2">#{{id}}</div>
+          <div class="me-auto ms-2"><a href="{{pathFor 'quiz' quizId=id_str}}" class="quiz-link"><span>{{title}}</span></a></div>
 
           <div class="badge-container ms-auto me-2">
             {{#if finality_type}}
@@ -120,9 +185,4 @@
     </ul>
   </div>
   {{/if}}
-
-  <div class="form-group align-items-center pt-4">
-    <button data-logout type="button" class="btn btn-danger">logout</button>
-  </div>
-
 </template>

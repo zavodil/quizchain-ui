@@ -7,14 +7,19 @@
     </div>
   {{else}}
     {{#with quiz}}
-      <h1 class="lead text-start py-0">{{title}}: Stats</h1>
-      <p>{{description}}</p>
+      <h1 class="lead text-start py-0">{{title}}</h1>
+      <h6>Users with the maximum number of answers, including incorrect ones</h6>
     {{/with}}
 
     <ul class="list-group">
       {{#each stats}}
         <li class="list-group-item d-flex justify-content-between align-items-center">
           {{player_id}}
+          {{#if reward}}
+            <div class="badge-container me-2 ms-auto">
+              <span class="badge bg-success rounded-pill">Reward {{reward}}</span>
+            </div>
+          {{/if}}
           <div class="badge-container">
             <span class="badge bg-dark rounded-pill">{{answers_quantity}}/{{quiz.questions.length}}</span>
           </div>
@@ -25,6 +30,6 @@
         </li>
       {{/each}}
     </ul>
- 
+
   {{/if}}
 </template>

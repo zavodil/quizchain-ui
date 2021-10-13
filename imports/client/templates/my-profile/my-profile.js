@@ -2,30 +2,65 @@ import {app} from '/imports/client/app.js';
 import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
+import './my-profile.css';
 import './my-profile.html';
+
+const VIEW_LIMIT = 30;
 
 Template.myProfile.onCreated(function () {
   this.isLoading = new ReactiveVar(true);
   this.isPendingOperation = new ReactiveVar(false);
   this.quizzesByUser = new ReactiveVar([]);
-  let data;
+  this.quizzesByOwner = new ReactiveVar([]);
+  let userData;
+  let ownerData;
 
   if (!app._account) {
     FlowRouter.go('home');
   }
 
   (async () => {
-    data = await app.contract.get_quizzes_by_owner({
+    ownerData = await app.contract.get_quizzes_by_owner({
       account_id: app._account.accountId,
       from_index: 0,
-      limit: 20
+      limit: VIEW_LIMIT
     });
-    if (data) {
-      data = data.map(quiz => {
+
+    if (ownerData) {
+      ownerData = ownerData.map(quiz => {
+        quiz.id_str = quiz.id.toString();
+        quiz.is_revealed_answers = quiz.revealed_answers !== null && quiz.revealed_answers.length > 0;
+        quiz.tokenTicker = app.tokens_account_ids[quiz.token_account_id || ''].name;
+
+        quiz.myRewardToClaim = 0;
+        quiz.myRewardClaimed = 0;
+        quiz.distributed_rewards.map(reward => {
+          if (reward.winner_account_id === app._account.accountId) {
+            if (reward.claimed) {
+              quiz.myRewardClaimed += app.convertAmount(reward.amount, quiz.token_account_id, 'fromBlockchain');
+            } else {
+              quiz.myRewardToClaim += app.convertAmount(reward.amount, quiz.token_account_id, 'fromBlockchain');
+            }
+          }
+        });
+
+        return quiz;
+      });
+      this.quizzesByOwner.set(ownerData);
+    }
+
+    userData = await app.contract.get_quizzes_by_player({
+      account_id: app._account.accountId,
+      from_index: 0,
+      limit: VIEW_LIMIT
+    });
+    if (userData) {
+      userData = userData.map(quiz => {
+        quiz.id_str = quiz.id.toString();
         quiz.is_revealed_answers = quiz.revealed_answers !== null && quiz.revealed_answers.length > 0;
         return quiz;
       });
-      this.quizzesByUser.set(data);
+      this.quizzesByUser.set(userData);
     }
 
     this.isLoading.set(false);
@@ -41,6 +76,15 @@ Template.myProfile.helpers({
   },
   quizzesByUser() {
     return Template.instance().quizzesByUser.get();
+  },
+  isQuizzesByUser() {
+    return Template.instance().quizzesByUser.get().length > 0;
+  },
+  quizzesByOwner() {
+    return Template.instance().quizzesByOwner.get();
+  },
+  isQuizzesByOwner() {
+    return Template.instance().quizzesByOwner.get().length > 0;
   }
 });
 

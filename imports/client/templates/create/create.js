@@ -224,7 +224,6 @@ async function createQuiz(sendTx) {
 
           if (kind === 'Text') {
             let block = question.getElementsByClassName('type-text')[0];
-            //console.log(block.querySelector('input[name="question[' + questionIndex + '].option[-]"]'));
             currentAnswer.selected_text = block.querySelector('input[name="question[' + questionIndex + '].option[-]"]').value.toLowerCase();
           } else {
             let answerElements = document.getElementsByName(`question[${questionIndex}].answers`);
@@ -269,23 +268,17 @@ async function createQuiz(sendTx) {
   quiz.secret = getHash(quiz.title + quiz.description + app._account.accountId);
   let successHash = getHash(quiz.secret);
   let index = 0;
-  //console.log(answers);
-  //console.log(successHash);
-  quiz.questions.map(question => {
-    //console.log(question.content);
+  quiz.questions.map(() => {
     let value = '';
     if (answers.revealed_answers[index].selected_text) {
       value = answers.revealed_answers[index].selected_text.toLowerCase();
     } else {
       answers.revealed_answers[index].selected_option_ids.map(answerIndex => {
-        //console.log(quiz.all_question_options[index][answer_index]);
         value += quiz.all_question_options[index][answerIndex].content.toLowerCase();
       });
     }
     index++;
-    //console.log(value);
     successHash = getHash(successHash + value);
-    //console.log(successHash);
   });
 
   if (quiz.finality_type === 'Direct') {
@@ -316,7 +309,6 @@ async function createQuiz(sendTx) {
         changeMethods: ['ft_transfer_call'],
         sender: app._account.accountId
       });
-      //console.log(ftContract);
 
       let params = {
         receiver_id: Meteor.settings.public.nearConfig.contractName,
@@ -324,8 +316,6 @@ async function createQuiz(sendTx) {
         memo: 'Create Quiz',
         msg: JSON.stringify(quiz),
       };
-      //console.log(params);
-
       ftContract.ft_transfer_call(params, app.maxGas, 1);
     } else {
       app.contract.create_quiz(quiz, app.maxGas, token.convertToBlockchain(totalAttachedTokens));
@@ -333,14 +323,6 @@ async function createQuiz(sendTx) {
   }
 
   return true;
-
-
-  //console.log(quiz);
-
-  /*
-  E && near call $CONTRACT_NAME create_quiz '{"title": "Test QUIZ", "description": "Dummy text about the quiz", "questions": [{"kind": "OneChoice", "content":"True!"}], "all_question_options": [[{"content":"True", "kind":"Text"}, {"content":"False", "kind":"Text"}]], "rewards":[{"amount":"1000000000000000000000000"}], "finality_type": "Direct", "restart_allowed": true, "language": "RU"}' --accountId $CONTRACT_NAME --deposit 1.01
-
-   */
 }
 
 

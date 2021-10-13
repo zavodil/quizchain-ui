@@ -1,0 +1,11 @@
+.quiz-link  {
+    color: #1c1f23;
+}
+
+.quiz-link{
+    text-decoration: none;
+}
+
+.quiz-link:hover{
+    text-decoration: underline;
+}

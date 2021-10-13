@@ -37,6 +37,18 @@ Promise.all([
     }
   },
 }, {
+  pathDef: '/quiz/:quizId',
+  options: {
+    title: 'Quiz',
+    name: 'quiz',
+    waitOn() {
+      return import('/imports/client/templates/home/home');
+    },
+    action(params) {
+      this.render('mainLayout', 'home', { params });
+    }
+  },
+}, {
   pathDef: '/answers/:quizId',
   options: {
     title: 'Answers',

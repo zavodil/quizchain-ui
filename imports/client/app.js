@@ -66,6 +66,23 @@ const app = {
 
     this._quizData.set(quizData);
   },
+  async fetchQuizById(qid) {
+    const quiz = await app.contract.get_quiz({quiz_id: qid});
+    if (quiz) {
+      quiz._id = `${quiz.id}`;
+      quiz.totalPrizesQty = 0;
+      quiz.totalAvailableRewards = quiz.available_rewards.reduce((prev, cur) => {
+        if (cur.claimed === false) {
+          quiz.totalPrizesQty++;
+          return prev + parseFloat(this.convertAmount(cur.amount, quiz.token_account_id, 'fromBlockchain'));
+        }
+        return 0;
+      }, 0);
+
+      quiz.tokenTicker = this.tokens_account_ids[quiz.token_account_id || ''].name;
+    }
+    return quiz;
+  },
   async loginNEARWallet() {
     this._isLoggingIn.set(true);
     app.wallet.requestSignIn(Meteor.settings.public.nearConfig.contractName, 'Quiz Chain');
@@ -104,7 +121,7 @@ Meteor.startup(async () => {
     app.user.set(app._account);
 
     app.contract = await new Contract(app._account, Meteor.settings.public.nearConfig.contractName, {
-      viewMethods: ['get_quiz', 'get_active_quizzes', 'gets_quiz_stats', 'get_game', 'get_distributed_rewards_by_quiz', 'get_answers', 'get_quizzes_by_owner', 'get_users_with_final_hash'],
+      viewMethods: ['get_quiz', 'get_active_quizzes', 'gets_quiz_stats', 'get_game', 'get_distributed_rewards_by_quiz', 'get_answers', 'get_quizzes_by_owner', 'get_quizzes_by_player', 'get_users_with_final_hash'],
       changeMethods: ['claim_reward', 'start_game', 'send_answer', 'restart_game', 'create_quiz', 'reveal_final_hash', 'reveal_answers'],
       sender: app._account.accountId
     });

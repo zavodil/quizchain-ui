@@ -31,6 +31,7 @@
           <h2 class="lead">Sorry, some answers were wrong</h2>
 
           {{#if quiz.restart_allowed}}
+            {{#if compare quiz.status '===' 'InProgress'}}
               <div class="text-center">
                 <h4>Try again if you want!</h4>
 
@@ -42,6 +43,7 @@
                     {{/if}}
                   </button>
               </div>
+            {{/if}}
           {{else}}
             <h2 class="lead">Try again in other quiz</h2>
           {{/if}}

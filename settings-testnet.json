@@ -3,7 +3,7 @@
     "nearConfig": {
       "networkId": "testnet",
       "nodeUrl": "https://rpc.testnet.near.org",
-      "contractName": "dev-1633954937171-5611476",
+      "contractName": "dev-1634073098508-6961159",
       "walletUrl": "https://wallet.testnet.near.org",
       "helperUrl": "https://helper.testnet.near.org",
       "explorerUrl": "https://explorer.testnet.near.org"

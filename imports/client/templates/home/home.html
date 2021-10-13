@@ -20,7 +20,7 @@
     {{else}}
       <div class="text-center my-5 py-5">
         {{#if noQuizzesAvailable}}
-          <h2 class="lead text-muted">No quizzes available at the moment.<br>Please, visit this page later</h2>
+          <h2 class="lead text-muted">No quizzes available at the moment.<br>Come back later or <a href="{{pathFor 'create'}}">create</a> your own quiz.</h2>
         {{else}}
           <div class="spinner-grow text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -35,7 +35,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">{{title}}</h5>
+              <h5 class="modal-title"><a href="{{pathFor 'quiz' quizId=id}}" class="quiz-link"><span>{{title}}</span></a></h5>
               <a href="{{pathFor 'leaderboard' quizId=_id}}">
                 <span class="badge rounded-pill bg-info ms-lg-3">Quiz stats</span>
               </a>
