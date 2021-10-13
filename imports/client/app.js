@@ -22,11 +22,42 @@ const app = {
       convertToHuman: utils.format.formatNearAmount,
       convertToBlockchain: utils.format.parseNearAmount,
     },
+    '6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near': {
+      name: 'DAI',
+      convertToHuman: convertFromE18,
+      convertToBlockchain: convertToE18,
+    },
+    'c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near': {
+      name: 'wETH',
+      convertToHuman: convertFromE18,
+      convertToBlockchain: convertToE18,
+    },
+    'token.v2.ref-finance.near': {
+      name: 'REF',
+      convertToHuman: convertFromE18,
+      convertToBlockchain: convertToE18,
+    },
+    'token.skyward.near': {
+      name: 'SKYWARD',
+      convertToHuman: convertFromE18,
+      convertToBlockchain: convertToE18,
+    },
+    'token.paras.near': {
+      name: 'PARAS',
+      convertToHuman: convertFromE18,
+      convertToBlockchain: convertToE18,
+    },
+    'd9c2d319cd7e6177336b0a9c93c21cb48d84fb54.factory.bridge.near': {
+      name: 'HAPI',
+      convertToHuman: convertFromE18,
+      convertToBlockchain: convertToE18,
+    }
+    /*
     'rft.tokenfactory.testnet': {
-      name: 'RFT',
+      name: 'Testnet RFT',
       convertToHuman: convertFromE8,
       convertToBlockchain: convertToE8,
-    },
+    },*/
   },
   formatNearAmount(str) {
     return parseFloat(utils.format.formatNearAmount(str));
