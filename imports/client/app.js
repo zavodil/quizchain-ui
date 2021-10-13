@@ -134,6 +134,10 @@ function convertToE18(amount) {
   return new BN(Math.round(amount * 100000000)).mul(new BN('10000000000')).toString();
 }
 
+function convertFromE18(amount) {
+  return (Math.round(amount / 1000000000) / 1000000000);
+}
+
 function convertToE8(amount) {
   return new BN(Math.round(amount * 1000000)).mul(new BN('100')).toString();
 }
