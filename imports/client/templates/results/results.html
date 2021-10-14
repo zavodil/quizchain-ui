@@ -28,24 +28,31 @@
         {{/unless}}
       {{else}}
         <div class="mb-5">
-          <h2 class="lead">Sorry, some answers were wrong</h2>
 
-          {{#if quiz.restart_allowed}}
-            {{#if compare quiz.status '===' 'InProgress'}}
-              <div class="text-center">
-                <h4>Try again if you want!</h4>
-
-                  <button data-restart-quiz type="button" class="btn btn-lg btn-primary mt-2" aria-label="Restart">
-                    {{#if isRestarting}}
-                      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;
-                    {{else}}
-                      Restart the quiz
-                    {{/if}}
-                  </button>
-              </div>
-            {{/if}}
+          {{#if successButNoReward}}
+            <h2 class="lead">Congrats!</h2>
+            <h4 class="text-center">You answers were correct, but all quiz rewards were already distributed!</h4>
+            <img src="/images/img-result.svg" class="img-fluid my-5" alt="Congrats!">
           {{else}}
-            <h2 class="lead">Try again in other quiz</h2>
+            <h2 class="lead">Sorry, some answers were wrong</h2>
+
+            {{#if quiz.restart_allowed}}
+              {{#if compare quiz.status '===' 'InProgress'}}
+                <div class="text-center">
+                  <h4>Try again if you want!</h4>
+
+                    <button data-restart-quiz type="button" class="btn btn-lg btn-primary mt-2" aria-label="Restart">
+                      {{#if isRestarting}}
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> &nbsp;
+                      {{else}}
+                        Restart the quiz
+                      {{/if}}
+                    </button>
+                </div>
+              {{/if}}
+            {{else}}
+              <h2 class="lead">Try again in other quiz</h2>
+            {{/if}}
           {{/if}}
         </div>
       {{/if}}

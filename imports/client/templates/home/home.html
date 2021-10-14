@@ -56,8 +56,14 @@
                 <p>{{description}}</p>
               </div>
 
-              <div class="mt-2">Be the first of {{totalPrizesQty}} participants to answer correctly all questions to win stake of
-                {{totalAvailableRewards}} {{tokenTicker}}</div>
+              {{#if compare status '===' 'InProgress' }}
+                <div class="mt-2">Be the first of {{totalPrizesQty}} participants to answer correctly all questions to win stake of
+                  {{totalAvailableRewards}} {{tokenTicker}}</div>
+              {{else}}
+                {{#if compare status '===' 'Finished' }}
+                <div class="mt-2">Quiz is finished, total distributed rewards: {{totalDistributedRewards}} {{tokenTicker}}. You may play just for fun.</div>
+                {{/if}}
+              {{/if}}
             </div>
 
             <div class="modal-footer">
@@ -66,7 +72,11 @@
                   {{#if isJoining}}
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                   {{else}}
-                    Start
+                    {{#if compare status '===' 'InProgress' }}
+                      Start
+                    {{else}}
+                      Play
+                    {{/if}}
                   {{/if}}
                 </a>
             </div>

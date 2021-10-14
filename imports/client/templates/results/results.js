@@ -37,16 +37,24 @@ Template.results.onCreated(function () {
     this.delayed = (this.quiz?.finality_type === 'DelayedReveal' && this.quiz.status === 'InProgress');
 
     this.reward = false;
+    this.successButNoReward = false;
 
-    if (this.quiz?.distributed_rewards?.length) {
-      for (const reward of this.quiz.distributed_rewards) {
-        if (reward.winner_account_id === app._account.accountId) {
-          this.reward = reward;
-          this.reward.amountInt = app.convertAmount(this.reward.amount, this.quiz.token_account_id, 'fromBlockchain');
-          this.reward.tokenTicker = app.tokens_account_ids[this.quiz.token_account_id || ''].name;
-          throwConfettis();
-          break;
+    if (this.game.answers_quantity === this.quiz.total_questions) {
+      if (this.quiz?.distributed_rewards?.length) {
+        for (const reward of this.quiz.distributed_rewards) {
+          if (reward.winner_account_id === app._account.accountId) {
+            this.reward = reward;
+            this.reward.amountInt = app.convertAmount(this.reward.amount, this.quiz.token_account_id, 'fromBlockchain');
+            this.reward.tokenTicker = app.tokens_account_ids[this.quiz.token_account_id || ''].name;
+            throwConfettis();
+            break;
+          }
         }
+      }
+
+      if (!this.reward && this.game.current_hash === this.quiz.success_hash) {
+        this.successButNoReward = true;
+        throwConfettis();
       }
     }
 
@@ -70,6 +78,9 @@ Template.results.helpers({
   },
   reward() {
     return Template.instance().reward;
+  },
+  successButNoReward() {
+    return Template.instance().successButNoReward;
   },
   delayed() {
     return Template.instance().delayed;

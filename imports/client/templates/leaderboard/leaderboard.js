@@ -31,7 +31,7 @@ Template.leaderboard.onCreated(function () {
     let newStats = [];
     let index = 0;
     while (stats === undefined || (newStats !== null && newStats.length === VIEW_LIMIT)) {
-      newStats = await app.contract.gets_quiz_stats({
+      newStats = await app.contract.get_quiz_stats({
         quiz_id: this.quizId,
         from_index: index * VIEW_LIMIT,
         limit: VIEW_LIMIT
@@ -59,7 +59,7 @@ Template.leaderboard.onCreated(function () {
       newStats = [];
       index = 0;
       while (stats === undefined || (newStats !== null && newStats.length === VIEW_LIMIT)) {
-        newStats = await app.contract.gets_quiz_stats({
+        newStats = await app.contract.get_quiz_stats({
           quiz_id: this.quizId,
           from_index: index * VIEW_LIMIT,
           limit: VIEW_LIMIT

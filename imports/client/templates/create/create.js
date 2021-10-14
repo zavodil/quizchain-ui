@@ -181,8 +181,7 @@ Template.create.events({
       document.getElementById('preview-create').classList.add('visually-hidden');
       document.getElementById('create-quiz-block').classList.remove('visually-hidden');
       document.getElementById('main-fieldset').disabled = true;
-    }
-    ;
+    };
   },
 });
 
@@ -197,6 +196,10 @@ async function createQuiz(sendTx) {
   quiz.all_question_options = [];
   quiz.rewards = [];
 
+  if(!quiz.title) {
+    return alert('Quiz title is missing');
+  }
+
   let answers = {};
   answers.revealed_answers = [];
   const questions = document.getElementsByClassName('question-box');
@@ -207,7 +210,7 @@ async function createQuiz(sendTx) {
       const content = question.querySelector('input[name="question[' + questionIndex + '].content"]').value;
       const kind = question.querySelector('input[name="question[' + questionIndex + '].kind"]:checked').value;
       if (!content) {
-        return alert('Empty question #' + questionIndex);
+        return alert('Empty question #' + (parseInt(questionIndex) + 1));
       }
       quiz.questions.push({kind, content});
 
@@ -220,6 +223,9 @@ async function createQuiz(sendTx) {
         if (!option.classList.contains('visually-hidden')) {
           const optionIndex = option.getAttribute('index');
           const optionContent = question.querySelector('input[name="question[' + questionIndex + '].option[' + optionIndex + ']"]').value;
+          if (!optionContent) {
+            return alert('Empty question option #' + (parseInt(optionIndex) + 1));
+          }
           questionOptions.push({kind: 'Text', content: optionContent});
 
           if (kind === 'Text') {
@@ -239,6 +245,10 @@ async function createQuiz(sendTx) {
         }
       }
 
+      if(!questionOptions.length) {
+        return alert('Question options are missing');
+      }
+
       if (selectedOptionsIds.length) {
         currentAnswer.selected_option_ids = selectedOptionsIds;
       }
@@ -249,6 +259,10 @@ async function createQuiz(sendTx) {
       }
       quiz.all_question_options.push(questionOptions);
     }
+  }
+
+  if(!quiz.questions.length) {
+    return alert('Questions are missing');
   }
 
   let tokenAccountId = document.getElementsByClassName('add-reward-select-token')[0].value;
@@ -336,7 +350,7 @@ function recalculateTotalReward(parent) {
 
   let total = 0;
   for (let i = 0; i < rewards.length; i++) {
-    total += parseInt(rewards[i].value);
+    total += parseFloat(rewards[i].value);
     rewards[i].closest('.add-reward').getElementsByClassName('reward-index')[0].textContent = (i + 1) + '.';
   }
 

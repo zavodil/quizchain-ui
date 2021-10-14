@@ -91,6 +91,13 @@ const app = {
 
           quiz.tokenTicker = this.tokens_account_ids[quiz.token_account_id || ''].name;
           quizData.push(quiz);
+        } else if (quiz.status === 'Finished') {
+          quiz.totalDistributedRewards = quiz.distributed_rewards.reduce((prev, cur) => {
+            return prev + parseFloat(this.convertAmount(cur.amount, quiz.token_account_id, 'fromBlockchain'));
+          }, 0);
+
+          quiz.tokenTicker = this.tokens_account_ids[quiz.token_account_id || ''].name;
+          quizData.push(quiz);
         }
       }
     }
@@ -108,6 +115,10 @@ const app = {
           return prev + parseFloat(this.convertAmount(cur.amount, quiz.token_account_id, 'fromBlockchain'));
         }
         return 0;
+      }, 0);
+
+      quiz.totalDistributedRewards = quiz.distributed_rewards.reduce((prev, cur) => {
+        return prev + parseFloat(this.convertAmount(cur.amount, quiz.token_account_id, 'fromBlockchain'));
       }, 0);
 
       quiz.tokenTicker = this.tokens_account_ids[quiz.token_account_id || ''].name;
@@ -152,7 +163,7 @@ Meteor.startup(async () => {
     app.user.set(app._account);
 
     app.contract = await new Contract(app._account, Meteor.settings.public.nearConfig.contractName, {
-      viewMethods: ['get_quiz', 'get_active_quizzes', 'gets_quiz_stats', 'get_game', 'get_distributed_rewards_by_quiz', 'get_answers', 'get_quizzes_by_owner', 'get_quizzes_by_player', 'get_users_with_final_hash'],
+      viewMethods: ['get_quiz', 'get_active_quizzes', 'get_quiz_stats', 'get_game', 'get_distributed_rewards_by_quiz', 'get_answers', 'get_quizzes_by_owner', 'get_quizzes_by_player', 'get_users_with_final_hash'],
       changeMethods: ['claim_reward', 'start_game', 'send_answer', 'restart_game', 'create_quiz', 'reveal_final_hash', 'reveal_answers'],
       sender: app._account.accountId
     });

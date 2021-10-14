@@ -1,6 +1,5 @@
 .list-group-item {
   cursor: pointer;
-  display: flex !important;
   align-items: center;
 }
 .list-group-item > .form-check-input {
