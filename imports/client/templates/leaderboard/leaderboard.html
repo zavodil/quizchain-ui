@@ -14,7 +14,7 @@
     <ul class="list-group">
       {{#each stats}}
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          {{player_id}}
+          <div class="username-id">{{player_id}}</div>
           {{#if reward}}
             <div class="badge-container me-2 ms-auto">
               <span class="badge bg-success rounded-pill">Reward {{reward}}</span>

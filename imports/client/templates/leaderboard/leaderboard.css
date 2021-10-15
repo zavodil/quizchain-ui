@@ -7,3 +7,9 @@
 #join-button {
     font-size: 2em;
 }
+
+.username-id{
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

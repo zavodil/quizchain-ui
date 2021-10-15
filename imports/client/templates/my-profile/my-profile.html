@@ -7,12 +7,12 @@
   </div>
   {{else}}
   <div class="d-flex justify-content-between">
-    <div class="me-auto">
+    <div class="me-auto username-id-block">
       <h1 class="lead text-start py-0">Settings</h1>
-      <p>
-        Account: <a href="https://explorer.testnet.near.org/accounts/{{appUser.accountId}}" target="_blank"
+      <div class="username-id-text">
+        Account: <a href="https://explorer.near.org/accounts/{{appUser.accountId}}" target="_blank"
                     class="text-muted">{{appUser.accountId}}</a>
-      </p>
+      </div>
     </div>
     <div class="ms-auto">
       <button data-logout type="button" class="btn btn-danger">logout</button>

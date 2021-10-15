@@ -9,3 +9,13 @@
 .quiz-link:hover{
     text-decoration: underline;
 }
+
+.username-id-block{
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.username-id-text{
+display: inline;
+white-space: nowrap;
+}

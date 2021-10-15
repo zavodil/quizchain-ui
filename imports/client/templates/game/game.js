@@ -14,7 +14,13 @@ Template.game.onCreated(function () {
   this.quiz = app.activeQuiz.get();
 
   if (!this.quiz) {
-    FlowRouter.go('home');
+    const quizId = parseInt(this.data.params.quizId);
+    if(quizId) {
+      FlowRouter.go('quiz', {quizId: quizId});
+    }
+    else {
+      FlowRouter.go('home');
+    }
   }
 });
 
