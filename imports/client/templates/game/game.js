@@ -15,12 +15,13 @@ Template.game.onCreated(function () {
 
   if (!this.quiz) {
     const quizId = parseInt(this.data.params.quizId);
-    if(quizId) {
+    if (quizId) {
       FlowRouter.go('quiz', {quizId: quizId});
-    }
-    else {
+    } else {
       FlowRouter.go('home');
     }
+  } else {
+    this.quiz.descriptionHtml = app.urlify(this.quiz.description);
   }
 });
 

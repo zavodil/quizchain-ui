@@ -7,6 +7,57 @@ import {BN} from 'bn.js';
 
 const {connect, keyStores, WalletConnection, Contract, utils} = nearAPI;
 
+const mainnetTokens = {
+  '': {
+    name: 'NEAR',
+    convertToHuman: utils.format.formatNearAmount,
+    convertToBlockchain: utils.format.parseNearAmount,
+  },
+  '6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near': {
+    name: 'DAI',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  },
+  'c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near': {
+    name: 'wETH',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  },
+  'token.v2.ref-finance.near': {
+    name: 'REF',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  },
+  'token.skyward.near': {
+    name: 'SKYWARD',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  },
+  'token.paras.near': {
+    name: 'PARAS',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  },
+  'd9c2d319cd7e6177336b0a9c93c21cb48d84fb54.factory.bridge.near': {
+    name: 'HAPI',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  }
+};
+
+const testnetTokens = {
+  '': {
+    name: 'NEAR',
+    convertToHuman: utils.format.formatNearAmount,
+    convertToBlockchain: utils.format.parseNearAmount,
+  },
+  'rft.tokenfactory.testnet': {
+    name: 'Testnet RFT',
+    convertToHuman: convertFromE8,
+    convertToBlockchain: convertToE8,
+  }
+};
+
 const app = {
   user: new ReactiveVar(false),
   activeQuiz: new ReactiveVar(false),
@@ -16,49 +67,10 @@ const app = {
   maxGas: 200000000000000,
   storageDepositGas: 5000000000000,
   claimGas: 80000000000000,
-  tokens_account_ids: {
-    '': {
-      name: 'NEAR',
-      convertToHuman: utils.format.formatNearAmount,
-      convertToBlockchain: utils.format.parseNearAmount,
-    },
-    '6b175474e89094c44da98b954eedeac495271d0f.factory.bridge.near': {
-      name: 'DAI',
-      convertToHuman: convertFromE18,
-      convertToBlockchain: convertToE18,
-    },
-    'c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.factory.bridge.near': {
-      name: 'wETH',
-      convertToHuman: convertFromE18,
-      convertToBlockchain: convertToE18,
-    },
-    'token.v2.ref-finance.near': {
-      name: 'REF',
-      convertToHuman: convertFromE18,
-      convertToBlockchain: convertToE18,
-    },
-    'token.skyward.near': {
-      name: 'SKYWARD',
-      convertToHuman: convertFromE18,
-      convertToBlockchain: convertToE18,
-    },
-    'token.paras.near': {
-      name: 'PARAS',
-      convertToHuman: convertFromE18,
-      convertToBlockchain: convertToE18,
-    },
-    'd9c2d319cd7e6177336b0a9c93c21cb48d84fb54.factory.bridge.near': {
-      name: 'HAPI',
-      convertToHuman: convertFromE18,
-      convertToBlockchain: convertToE18,
-    }
-    /*
-    'rft.tokenfactory.testnet': {
-      name: 'Testnet RFT',
-      convertToHuman: convertFromE8,
-      convertToBlockchain: convertToE8,
-    },*/
-  },
+  tokens_account_ids:
+    Meteor.settings.public.nearConfig.networkId === 'mainnet'
+      ? mainnetTokens
+      : testnetTokens,
   formatNearAmount(str) {
     return parseFloat(utils.format.formatNearAmount(str));
   },
@@ -88,6 +100,7 @@ const app = {
             }
             return 0;
           }, 0);
+          quiz.totalAvailableRewards = Math.round(quiz.totalAvailableRewards * 100) / 100;
 
           quiz.tokenTicker = this.tokens_account_ids[quiz.token_account_id || ''].name;
           quizData.push(quiz);
@@ -138,11 +151,19 @@ const app = {
       } else {
         amount = parseFloat(token.convertToHuman(input));
       }
-    }
-    else {
+    } else {
       console.log('Wrong contract' + contract);
     }
     return amount;
+  },
+  urlify(text) {
+    if (!text) {
+      return '';
+    }
+    let urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function (url) {
+      return '<a href="' + url + '" target="_blank">' + url + '</a>';
+    });
   }
 };
 
