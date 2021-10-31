@@ -47,6 +47,15 @@ Template.myProfile.onCreated(function () {
 
         return quiz;
       });
+      let uniqueIds = [];
+      ownerData = ownerData.filter(quiz => {
+        if (!uniqueIds.includes(quiz.id)) {
+          uniqueIds.push(quiz.id);
+          return true;
+        }
+        return false;
+      });
+
       this.quizzesByOwner.set(ownerData);
     }
 

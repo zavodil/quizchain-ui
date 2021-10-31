@@ -129,6 +129,7 @@ const app = {
         }
         return 0;
       }, 0);
+      quiz.totalAvailableRewards = Math.round(quiz.totalAvailableRewards * 100) / 100;
 
       quiz.totalDistributedRewards = quiz.distributed_rewards.reduce((prev, cur) => {
         return prev + parseFloat(this.convertAmount(cur.amount, quiz.token_account_id, 'fromBlockchain'));
