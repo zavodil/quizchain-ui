@@ -23,7 +23,7 @@ Template.myProfile.onCreated(function () {
   (async () => {
     ownerData = await app.contract.get_quizzes_by_owner({
       account_id: app._account.accountId,
-      from_index: 30,
+      from_index: 0,
       limit: VIEW_LIMIT_OWNER
     });
 
