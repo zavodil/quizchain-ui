@@ -21,6 +21,7 @@ Template.home.onCreated(function () {
       if (this.data?.params?.quizId) {
         const quizId = parseInt(this.data.params.quizId);
         const quiz = await app.fetchQuizById(quizId);
+        quiz.descriptionHtml = app.urlify(quiz.description);
         try {
           const game = await app.contract.get_game({quiz_id: quizId, account_id: app._account.accountId});
           let questionNo = 0;
@@ -93,6 +94,7 @@ Template.home.events({
   },
   'click [data-select-quiz]'(e, template) {
     e.preventDefault();
+    this.descriptionHtml = app.urlify(this.description);
     template.selectedQuiz.set(this);
     return false;
   },

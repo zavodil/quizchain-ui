@@ -2,7 +2,7 @@
   <div class="game-container">
     {{#with currentQuiz}}
       <h1 class="lead text-start py-0">{{title}}</h1>
-      <p>{{description}}</p>
+      <div>{{{descriptionHtml}}}</div>
     {{/with}}
 
     <div class="progress" id="progressbar">

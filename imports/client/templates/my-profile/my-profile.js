@@ -5,7 +5,8 @@ import {ReactiveVar} from 'meteor/reactive-var';
 import './my-profile.css';
 import './my-profile.html';
 
-const VIEW_LIMIT = 30;
+const VIEW_LIMIT_OWNER = 20;
+const VIEW_LIMIT_PLAYER = 50;
 
 Template.myProfile.onCreated(function () {
   this.isLoading = new ReactiveVar(true);
@@ -23,7 +24,7 @@ Template.myProfile.onCreated(function () {
     ownerData = await app.contract.get_quizzes_by_owner({
       account_id: app._account.accountId,
       from_index: 0,
-      limit: VIEW_LIMIT
+      limit: VIEW_LIMIT_OWNER
     });
 
     if (ownerData) {
@@ -52,7 +53,7 @@ Template.myProfile.onCreated(function () {
     userData = await app.contract.get_quizzes_by_player({
       account_id: app._account.accountId,
       from_index: 0,
-      limit: VIEW_LIMIT
+      limit: VIEW_LIMIT_PLAYER
     });
     if (userData) {
       userData = userData.map(quiz => {
