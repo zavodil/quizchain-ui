@@ -2,6 +2,7 @@
   cursor: pointer;
   align-items: center;
 }
+
 .list-group-item > .form-check-input {
   margin-right: 1em;
   position: absolute;
@@ -31,4 +32,8 @@
 
 .game-container {
   margin-bottom: 250px;
+}
+
+#progressbar {
+  margin-top: 1em;
 }
