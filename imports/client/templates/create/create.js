@@ -224,7 +224,7 @@ async function createQuiz(sendTx) {
         if (!option.classList.contains('visually-hidden')) {
           const optionIndex = option.getAttribute('index');
           const optionContent = question.querySelector('input[name="question[' + questionIndex + '].option[' + optionIndex + ']"]').value;
-          if (!optionContent) {
+          if (!optionContent && kind !== 'Text') {
             return alert('Empty question option #' + (parseInt(optionIndex) + 1));
           }
           questionOptions.push({kind: 'Text', content: optionContent});
