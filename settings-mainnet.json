@@ -6,7 +6,10 @@
       "contractName": "quizchain.near",
       "walletUrl": "https://wallet.mainnet.near.org",
       "helperUrl": "https://helper.mainnet.near.org",
-      "explorerUrl": "https://explorer.mainnet.near.org"
+      "explorerUrl": "https://explorer.mainnet.near.org",
+      "headers": {
+        "x-api-key": "049ef9ab-66d6-4a5f-bc02-7020bdf052a4"
+      }
     }
   }
 }
