@@ -19,6 +19,8 @@ Template.leaderboard.onCreated(function () {
       FlowRouter.go('home');
     }
 
+    this.delayed = (this.quiz?.finality_type === 'DelayedReveal' && this.quiz.status === 'InProgress');
+
     let winners = {};
     if (this.quiz.status === 'Finished') {
       this.quiz.distributed_rewards.map(reward => {
@@ -47,6 +49,10 @@ Template.leaderboard.onCreated(function () {
       if (stats !== null && stats.length) {
         stats = stats.sort((a, b) => b.answers_quantity - a.answers_quantity);
       }
+      stats = stats.map((stat) => {
+        stat.needs_more_answers = this.quiz.questions.length !== stat.answers_quantity;
+        return stat;
+      });
       this.stats.set(stats);
 
       index++;
@@ -75,6 +81,10 @@ Template.leaderboard.onCreated(function () {
         if (stats !== null && stats.length) {
           stats = stats.sort((a, b) => b.answers_quantity - a.answers_quantity);
         }
+        stats = stats.map((stat) => {
+          stat.needs_more_answers = this.quiz.questions.length !== stat.answers_quantity;
+          return stat;
+        });
         this.stats.set(stats);
 
         index++;
@@ -98,6 +108,9 @@ Template.leaderboard.helpers({
   },
   stats() {
     return Template.instance().stats.get();
+  },
+  delayed() {
+    return Template.instance().delayed;
   }
 });
 

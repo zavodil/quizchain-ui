@@ -21,7 +21,17 @@
             </div>
           {{/if}}
           <div class="badge-container">
-            <span class="badge bg-dark rounded-pill">{{answers_quantity}}/{{quiz.questions.length}}</span>
+            <span class="badge bg-dark rounded-pill">
+               {{#if delayed}}
+                {{#if needs_more_answers}}
+                  Pending {{answers_quantity}}/{{quiz.questions.length}}
+                {{else}}
+                  Pending
+                {{/if}}
+               {{else}}
+                {{answers_quantity}}/{{quiz.questions.length}}
+               {{/if}}
+            </span>
           </div>
         </li>
       {{else}}
