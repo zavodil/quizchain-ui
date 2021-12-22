@@ -12,6 +12,8 @@ NEAR Protocol-powered quizzes with crypto-prizes
 ```shell
 # NEAR TESTNET
 meteor --settings=settings-testnet.json
+# FOR MacOS
+arch -x86_64 meteor --settings=settings-testnet.json
 ```
 
 ## How to update

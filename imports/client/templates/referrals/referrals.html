@@ -1,4 +1,4 @@
-<template name="leaderboard">
+<template name="referrals">
   {{#if isLoading}}
     <div class="text-center my-5 py-5">
       <div class="spinner-grow text-primary" role="status">
@@ -8,20 +8,15 @@
   {{else}}
     {{#with quiz}}
       <h1 class="lead text-start py-0">{{title}}</h1>
-      <h6>Users with the total number of answers, <strong>including incorrect ones</strong></h6>
+      <h6>Users by their affiliates</h6>
     {{/with}}
 
     <ul class="list-group">
-      {{#each stats}}
+      {{#each referrals}}
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          <div class="username-id">{{player_id}}</div>
-          {{#if reward}}
-            <div class="badge-container me-2 ms-auto">
-              <span class="badge bg-success rounded-pill">Reward {{reward}}</span>
-            </div>
-          {{/if}}
+          <div class="username-id">{{account_id}}</div>
           <div class="badge-container">
-            <span class="badge bg-dark rounded-pill">{{answers_quantity}}/{{quiz.questions.length}}</span>
+            <span class="badge bg-dark rounded-pill">{{affiliates}}</span>
           </div>
         </li>
       {{else}}

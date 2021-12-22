@@ -7,6 +7,9 @@ import {BN} from 'bn.js';
 
 const {connect, keyStores, WalletConnection, Contract, utils} = nearAPI;
 
+const urlParams = new URLSearchParams(window.location.search);
+window.localStorage.setItem('referrer', urlParams.get('r'));
+
 const mainnetTokens = {
   '': {
     name: 'NEAR',
@@ -185,7 +188,7 @@ Meteor.startup(async () => {
     app.user.set(app._account);
 
     app.contract = await new Contract(app._account, Meteor.settings.public.nearConfig.contractName, {
-      viewMethods: ['get_quiz', 'get_active_quizzes', 'get_quiz_stats', 'get_game', 'get_distributed_rewards_by_quiz', 'get_answers', 'get_quizzes_by_owner', 'get_quizzes_by_player', 'get_users_with_final_hash'],
+      viewMethods: ['get_quiz', 'get_active_quizzes', 'get_quiz_stats', 'get_game', 'get_distributed_rewards_by_quiz', 'get_answers', 'get_quizzes_by_owner', 'get_quizzes_by_player', 'get_users_with_final_hash', 'get_affiliates'],
       changeMethods: ['claim_reward', 'start_game', 'send_answer', 'restart_game', 'create_quiz', 'reveal_final_hash', 'reveal_answers'],
       sender: app._account.accountId
     });

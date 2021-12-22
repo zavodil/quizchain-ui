@@ -3,6 +3,7 @@ import {app} from '/imports/client/app.js';
 import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {Template} from 'meteor/templating';
+import { Meteor } from 'meteor/meteor';
 import './home.css';
 import './home.html';
 
@@ -77,6 +78,9 @@ Template.home.helpers({
   },
   isJoining() {
     return Template.instance().isJoining.get();
+  },
+  domain() {
+    return Meteor.absoluteUrl().replace(/\/$/, '');
   }
 });
 
@@ -111,7 +115,12 @@ Template.home.events({
       let questionNo = 0;
 
       if (!game) {
-        await app.contract.start_game({ quiz_id: this.id });
+        let params = {quiz_id: this.id};
+        let referrer = window.localStorage.getItem('referrer');
+        if (referrer) {
+          params.referrer_id = referrer;
+        }
+        await app.contract.start_game(params);
       } else {
         questionNo = game.answers_quantity;
 

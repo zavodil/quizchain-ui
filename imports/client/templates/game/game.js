@@ -171,6 +171,8 @@ Template.game.events({
           question_option_text: textAnswer
         });
 
+        window.localStorage.removeItem('referrer');
+
         FlowRouter.go('results', {quizId: quiz._id});
       }
     } catch (err) {

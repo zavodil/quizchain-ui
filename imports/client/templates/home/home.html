@@ -39,6 +39,9 @@
               <a href="{{pathFor 'leaderboard' quizId=_id}}">
                 <span class="badge rounded-pill bg-info ms-lg-3">Quiz stats</span>
               </a>
+              <a href="{{pathFor 'referrals' quizId=_id}}">
+                <span class="badge rounded-pill bg-info ms-lg-3">Referrals</span>
+              </a>
               <button data-deselect-quiz type="button" class="btn-close" aria-label="Close"></button>
             </div>
 
@@ -58,7 +61,14 @@
 
               {{#if compare status '===' 'InProgress' }}
                 <div class="mt-2">Be the first of {{totalPrizesQty}} participants to answer correctly all questions to win stake of
-                  {{totalAvailableRewards}} {{tokenTicker}}</div>
+                  {{totalAvailableRewards}} {{tokenTicker}}.</div>
+                <hr />
+                <div class="mt-2 d-flex justify-content-between align-items-center">
+                  <div class="flex-column flex-grow-0">Invite friends:</div>
+                  <div class="flex-column flex-grow-1 ms-2">
+                    <input type="text" value="{{domain}}{{pathFor 'quiz' quizId=_id}}/?r={{appUser.accountId}}" style="width: 100%">
+                  </div>
+                </div>
               {{else}}
                 {{#if compare status '===' 'Finished' }}
                 <div class="mt-2">Quiz is finished, total distributed rewards: {{totalDistributedRewards}} {{tokenTicker}}. You may play just for fun.</div>

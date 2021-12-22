@@ -37,6 +37,18 @@ Promise.all([
     }
   },
 }, {
+  pathDef: '/referrals/:quizId',
+  options: {
+    title: 'Referrals',
+    name: 'referrals',
+    waitOn() {
+      return import('/imports/client/templates/referrals/referrals');
+    },
+    action(params) {
+      this.render('mainLayout', 'referrals', { params });
+    }
+  },
+}, {
   pathDef: '/quiz/:quizId',
   options: {
     title: 'Quiz',

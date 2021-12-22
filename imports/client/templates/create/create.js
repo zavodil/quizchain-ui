@@ -8,6 +8,7 @@ import './create.css';
 import './create.html';
 
 const CryptoJS = require('crypto-js');
+const ROUNDING_FRACTION = 8;
 
 Template.create.onCreated(function () {
   if (!app._account) {
@@ -356,7 +357,7 @@ function recalculateTotalReward(parent) {
 
   if (total > 0) {
     parent.getElementsByClassName('total-rewards')[0].classList.remove('visually-hidden');
-    parent.getElementsByClassName('total-rewards-amount')[0].textContent = total + Math.min(total * 0.01, 10);
+    parent.getElementsByClassName('total-rewards-amount')[0].textContent = ((total + Math.min(total * 0.01, 10)).toFixed(ROUNDING_FRACTION));
     let token = parent.getElementsByClassName('add-reward-select-token')[0].value;
     let tokenTicker = app.tokens_account_ids[token || ''].name;
     parent.getElementsByClassName('total-rewards-token-id')[0].textContent = tokenTicker;

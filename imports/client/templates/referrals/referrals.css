@@ -1,0 +1,15 @@
+.button-area {
+    display: flex;
+    justify-content: center;
+    margin: 2em;
+}
+
+#join-button {
+    font-size: 2em;
+}
+
+.username-id{
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
