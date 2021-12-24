@@ -8651,6 +8651,7 @@ fieldset:disabled .btn {
 
 .rounded-pill {
   border-radius: 50rem !important;
+  cursor: default;
 }
 
 .rounded-top {

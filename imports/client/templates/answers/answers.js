@@ -27,10 +27,19 @@ Template.answers.onCreated(function () {
         answers[i].question = question;
         answers[i].index = answers[i].id + 1;
         answers[i].result = answers[i].is_corrent !== null ? answers[i].is_correct.toString() : '';
+
+        if (!answers[i].is_correct) {
+          const revealedAnswer = await app.contract.get_revealed_answer({quiz_id: this.quizId, question_id: i});
+          if (revealedAnswer.kind === 'Text') {
+            answers[i].revealed_answer = revealedAnswer.selected_text;
+          } else {
+            answers[i].revealed_answer = revealedAnswer.selected_option_ids.map(id => options[id].content).join(', ');
+          }
+        }
         if (question.kind === 'Text') {
           answers[i].answer = answers[i].selected_text;
         } else {
-          answers[i].answer = answers[i].selected_option_ids.map(id => options[id].content).join(',');
+          answers[i].answer = answers[i].selected_option_ids.map(id => options[id].content).join(', ');
         }
       }
     }

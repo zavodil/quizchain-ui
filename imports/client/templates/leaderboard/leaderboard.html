@@ -17,11 +17,11 @@
           <div class="username-id">{{player_id}}</div>
           {{#if reward}}
             <div class="badge-container me-2 ms-auto">
-              <span class="badge bg-success rounded-pill">Reward {{reward}}</span>
+              <span class="badge bg-success rounded-pill" title="{{claimed}}">Reward {{reward}}</span>
             </div>
           {{/if}}
           <div class="badge-container">
-            <span class="badge bg-dark rounded-pill">
+            <span class="badge bg-dark rounded-pill" title="{{answer_time}}">
                {{#if delayed}}
                 {{#if needs_more_answers}}
                   Pending {{answers_quantity}}/{{quiz.questions.length}}

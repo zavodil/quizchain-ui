@@ -15,8 +15,13 @@
       {{#each answers}}
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <div>
-            <div class="fst-italic">{{index}}. {{question.content}}</div>
-            <div>{{answer}}</div>
+            <div class="fst-italic fw-bold">{{index}}. {{question.content}}</div>
+            <div>Your answer: {{answer}}</div>
+            {{#if compare result '===' 'false'}}
+              {{#if compare revealed_answer '!==' ''}}
+                Correct answer: {{revealed_answer}}
+              {{/if}}
+            {{/if}}
           </div>
           <div class="badge-container">
             {{#if result}}

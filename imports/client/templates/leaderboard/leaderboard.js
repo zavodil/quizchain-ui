@@ -24,7 +24,10 @@ Template.leaderboard.onCreated(function () {
     let winners = {};
     if (this.quiz.status === 'Finished') {
       this.quiz.distributed_rewards.map(reward => {
-        winners[reward.winner_account_id] = app.convertAmount(reward.amount, this.quiz.token_account_id, 'fromBlockchain');
+        winners[reward.winner_account_id] = {
+          amount: app.convertAmount(reward.amount, this.quiz.token_account_id, 'fromBlockchain'),
+          claimed: reward.claimed
+        };
       });
       this.quiz.tokenTicker = app.tokens_account_ids[this.quiz.token_account_id || ''].name;
     }
@@ -41,16 +44,23 @@ Template.leaderboard.onCreated(function () {
       if (this.quiz.status === 'Finished') {
         for (let i = 0; i < newStats.length; i++) {
           if (winners.hasOwnProperty(newStats[i].player_id)) {
-            newStats[i].reward = winners[newStats[i].player_id] + ' ' + this.quiz.tokenTicker;
+            newStats[i].reward = winners[newStats[i].player_id].amount + ' ' + this.quiz.tokenTicker;
+            newStats[i].claimed = winners[newStats[i].player_id].claimed ? 'Claimed' : 'Not claimed';
           }
         }
       }
       stats = stats ? stats.concat(newStats) : newStats;
       if (stats !== null && stats.length) {
-        stats = stats.sort((a, b) => b.answers_quantity - a.answers_quantity);
+        stats = stats.sort((a, b) => {
+          if (b.answers_quantity === a.answers_quantity) {
+            return a.last_answer_timestamp - b.last_answer_timestamp;
+          }
+          return b.answers_quantity - a.answers_quantity;
+        });
       }
       stats = stats.map((stat) => {
         stat.needs_more_answers = this.quiz.questions.length !== stat.answers_quantity;
+        stat.answer_time = stat.answers_quantity ? new Date(stat.last_answer_timestamp / 1000000).toLocaleString() : '';
         return stat;
       });
       this.stats.set(stats);
@@ -73,16 +83,23 @@ Template.leaderboard.onCreated(function () {
         if (this.quiz.status === 'Finished') {
           for (let i = 0; i < newStats.length; i++) {
             if (winners.hasOwnProperty(newStats[i].player_id)) {
-              newStats[i].reward = winners[newStats[i].player_id] + ' ' + this.quiz.tokenTicker;
+              newStats[i].reward = winners[newStats[i].player_id].amount + ' ' + this.quiz.tokenTicker;
+              newStats[i].claimed = winners[newStats[i].player_id].claimed ? 'Claimed' : 'Not claimed';
             }
           }
         }
         stats = stats ? stats.concat(newStats) : newStats;
         if (stats !== null && stats.length) {
-          stats = stats.sort((a, b) => b.answers_quantity - a.answers_quantity);
+          stats = stats.sort((a, b) => {
+            if (b.answers_quantity === a.answers_quantity) {
+              return a.last_answer_timestamp - b.last_answer_timestamp;
+            }
+            return b.answers_quantity - a.answers_quantity;
+          });
         }
         stats = stats.map((stat) => {
           stat.needs_more_answers = this.quiz.questions.length !== stat.answers_quantity;
+          stat.answer_time = stat.answers_quantity ? new Date(stat.last_answer_timestamp / 1000000).toLocaleString() : '';
           return stat;
         });
         this.stats.set(stats);
