@@ -37,3 +37,9 @@
 #progressbar {
   margin-top: 1em;
 }
+
+.question-kind{
+  font-style: italic;
+  font-size: 0.875em;
+  color: var(--bs-body-color);
+}

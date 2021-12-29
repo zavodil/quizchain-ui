@@ -32,6 +32,12 @@
               <label for="{{answer.id}}" class="form-label">Enter answer:</label>
               <input placeholder="{{compare question.hint '||' 'enter answer here'}}" class="form-control" type="text" name="textfield" id="{{answer.id}}" maxlength="64" autocomplete="off" autocorrect="off" autocapitalize="off">
             {{else}}
+              {{#if compare question.kind '===' 'MultipleChoice'}}
+                <div class="question-kind">Multiple choice question</div>
+              {{/if}}
+              {{#if compare question.kind '===' 'OneChoice'}}
+                <div class="question-kind">Single choice question</div>
+              {{/if}}
               <ul class="list-group">
                 {{#each answer in question_options}}
                   <label class="list-group-item d-flex" for="{{answer.id}}">
