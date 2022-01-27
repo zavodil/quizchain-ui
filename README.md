@@ -10,6 +10,8 @@ NEAR Protocol-powered quizzes with crypto-prizes
 ## Running locally
 
 ```shell
+#Deploy Node.JS version 16.9.1
+nvm use 16.9.1
 # NEAR TESTNET
 meteor --settings=settings-testnet.json
 # FOR MacOS

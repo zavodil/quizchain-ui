@@ -2,6 +2,7 @@ import {app} from '/imports/client/app.js';
 import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
+import {BN} from 'bn.js';
 
 import './leaderboard.css';
 import './leaderboard.html';
@@ -44,16 +45,24 @@ Template.leaderboard.onCreated(function () {
       if (this.quiz.status === 'Finished') {
         for (let i = 0; i < newStats.length; i++) {
           if (winners.hasOwnProperty(newStats[i].player_id)) {
+            newStats[i].amount = winners[newStats[i].player_id].amount;
             newStats[i].reward = winners[newStats[i].player_id].amount + ' ' + this.quiz.tokenTicker;
             newStats[i].claimed = winners[newStats[i].player_id].claimed ? 'Claimed' : 'Not claimed';
+          } else {
+            newStats[i].amount = 0;
           }
         }
       }
       stats = stats ? stats.concat(newStats) : newStats;
       if (stats !== null && stats.length) {
         stats = stats.sort((a, b) => {
+          const aTimestamp = new BN((a.last_answer_timestamp || '0').toString());
+          const bTimestamp = new BN((b.last_answer_timestamp || '0').toString());
           if (b.answers_quantity === a.answers_quantity) {
-            return a.last_answer_timestamp - b.last_answer_timestamp;
+            if(aTimestamp.eq(bTimestamp)) {
+              return a.amount < b.amount ? 0 : -1;
+            }
+            return (aTimestamp).gt(bTimestamp) ? 0 : -1;
           }
           return b.answers_quantity - a.answers_quantity;
         });
@@ -69,44 +78,6 @@ Template.leaderboard.onCreated(function () {
     }
 
     this.isLoading.set(false);
-
-    this.timer = setInterval(async () => {
-      stats = undefined;
-      newStats = [];
-      index = 0;
-      while (stats === undefined || (newStats !== null && newStats.length === VIEW_LIMIT)) {
-        newStats = await app.contract.get_quiz_stats({
-          quiz_id: this.quizId,
-          from_index: index * VIEW_LIMIT,
-          limit: VIEW_LIMIT
-        });
-        if (this.quiz.status === 'Finished') {
-          for (let i = 0; i < newStats.length; i++) {
-            if (winners.hasOwnProperty(newStats[i].player_id)) {
-              newStats[i].reward = winners[newStats[i].player_id].amount + ' ' + this.quiz.tokenTicker;
-              newStats[i].claimed = winners[newStats[i].player_id].claimed ? 'Claimed' : 'Not claimed';
-            }
-          }
-        }
-        stats = stats ? stats.concat(newStats) : newStats;
-        if (stats !== null && stats.length) {
-          stats = stats.sort((a, b) => {
-            if (b.answers_quantity === a.answers_quantity) {
-              return a.last_answer_timestamp - b.last_answer_timestamp;
-            }
-            return b.answers_quantity - a.answers_quantity;
-          });
-        }
-        stats = stats.map((stat) => {
-          stat.needs_more_answers = this.quiz.questions.length !== stat.answers_quantity;
-          stat.answer_time = stat.answers_quantity ? new Date(stat.last_answer_timestamp / 1000000).toLocaleString() : '';
-          return stat;
-        });
-        this.stats.set(stats);
-
-        index++;
-      }
-    }, 30000);
   })();
 });
 
