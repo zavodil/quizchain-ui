@@ -45,6 +45,21 @@ const mainnetTokens = {
     name: 'HAPI',
     convertToHuman: convertFromE18,
     convertToBlockchain: convertToE18,
+  },
+  'aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near': {
+    name: 'AURORA',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  },
+  'token.burrow.near': {
+    name: 'BRRR',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
+  },
+  'usn': {
+    name: 'USN',
+    convertToHuman: convertFromE18,
+    convertToBlockchain: convertToE18,
   }
 };
 
