@@ -165,7 +165,7 @@ Template.results.events({
     const actions = [];
 
     let quiz = Template.instance().quiz;
-    if (quiz.token_account_id) {
+    if (quiz.token_account_id && quiz.token_account_id !== "usn") {
       actions.push([
         quiz.token_account_id,
         nearAPI.transactions.functionCall(
