@@ -45,6 +45,11 @@ Template.myProfile.onCreated(function () {
           }
         });
 
+        quiz.timestamp_diff_days = Math.ceil((new Date()).getTime() - quiz.timestamp / 1000000) / 1000 / 3600 / 24;
+        if (quiz.status === 'InProgress' && quiz.timestamp_diff_days > 5) {
+          quiz.allow_cancel = true;
+        }
+
         return quiz;
       });
       let uniqueIds = [];
@@ -56,6 +61,7 @@ Template.myProfile.onCreated(function () {
         return false;
       });
 
+      ownerData.reverse();
       this.quizzesByOwner.set(ownerData);
     }
 
@@ -70,6 +76,7 @@ Template.myProfile.onCreated(function () {
         quiz.is_revealed_answers = quiz.revealed_answers !== null && quiz.revealed_answers.length > 0;
         return quiz;
       });
+      userData.reverse();
       this.quizzesByUser.set(userData);
     }
 
