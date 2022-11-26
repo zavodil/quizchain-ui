@@ -1,9 +1,10 @@
-import {app} from '/imports/client/app.js';
+import {app, getSocial} from '/imports/client/app.js';
 import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {BN} from 'bn.js';
 
+import '../../styles/quizchain.css';
 import './leaderboard.css';
 import './leaderboard.html';
 
@@ -53,6 +54,21 @@ Template.leaderboard.onCreated(function () {
           }
         }
       }
+
+      // near social data
+      let socialKeys = newStats.map(stat => `${stat.player_id}/profile/**`);
+      await getSocial(socialKeys).then((socialData) => {
+        Object.entries(socialData).forEach(account => {
+          for (let i = 0; i < newStats.length; i++) {
+            if (newStats[i].player_id === account[0]) {
+              newStats[i].name = account[1].profile?.name;
+              newStats[i].image = account[1].profile?.image?.url;
+              break;
+            }
+          }
+        });
+      });
+
       stats = stats ? stats.concat(newStats) : newStats;
       if (stats !== null && stats.length) {
         stats = stats.sort((a, b) => {

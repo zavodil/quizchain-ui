@@ -47,16 +47,39 @@
 
             <div class="modal-body bg-light border-top">
               <div class="border-bottom">
-                <p>
+
                   {{#if language}}
-                  Language: {{language}}.
+                    <div>
+                      Language: {{language}}.
+                    </div>
                   {{/if}}
 
                   {{#if owner_id}}
-                  Author: {{owner_id}}.
+                    <div>
+                      <div class="near-social-profile d-inline-block position-relative overflow-hidden">
+                        Author:
+                        {{#if image}}
+                        <div class="near-social-profile-image">
+                          <img src="{{image}}" alt="{{player_id}}">
+                        </div>
+                        {{/if}}
+                        <span>
+                              {{#if name}}
+                                  <a href="//{{owner_id}}.social" target="_blank" rel="noopener nofollow">
+                                      {{name}} <span class="text-muted">@{{owner_id}}</span>
+                                  </a>
+                              {{else}}
+                                  {{owner_id}}
+                              {{/if}}
+                          </span>
+                      </div>
+                    </div>
                   {{/if}}
-                </p>
-                <p>{{{descriptionHtml}}}</p>
+
+
+                <div>
+                  <p>{{{descriptionHtml}}}</p>
+                </div>
               </div>
 
               {{#if compare status '===' 'InProgress' }}

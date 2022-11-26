@@ -4,6 +4,7 @@ import {FlowRouter} from 'meteor/ostrio:flow-router-extra';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {Template} from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
+import '../../styles/quizchain.css';
 import './home.css';
 import './home.html';
 

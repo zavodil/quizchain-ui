@@ -1,0 +1,18 @@
+.near-social-profile a {
+    color: #212529;
+    text-decoration: none;
+}
+
+.near-social-profile-image {
+    display: inline-block !important;
+    width: 1.5em;
+    height: 1.6em;
+    position: relative !important;
+}
+
+.near-social-profile-image img {
+    border-radius: .375rem;
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover;
+}

@@ -133,6 +133,20 @@ const app = {
       }
     }
 
+    // near social data
+    let socialKeys = quizData.map(stat => `${stat.owner_id}/profile/**`);
+    await getSocial(socialKeys).then((socialData) => {
+      Object.entries(socialData).forEach(account => {
+        for (let i = 0; i < quizData.length; i++) {
+          if (quizData[i].owner_id === account[0]) {
+            quizData[i].name = account[1].profile?.name;
+            quizData[i].image = account[1].profile?.image?.url;
+            break;
+          }
+        }
+      });
+    });
+
     this._quizData.set(quizData);
   },
   async fetchQuizById(qid) {
@@ -210,7 +224,7 @@ Meteor.startup(async () => {
   }
 });
 
-export {app};
+export {app, getSocial};
 
 function convertToE18(amount) {
   return new BN(Math.round(amount * 100000000)).mul(new BN('10000000000')).toString();
@@ -226,4 +240,27 @@ function convertToE8(amount) {
 
 function convertFromE8(amount) {
   return (Math.round(amount / 10000) / 10000);
+}
+
+function getSocial(request) {
+  return fetch('https://api.near.social/get', {
+    'headers': {
+      'accept': '*/*',
+      'accept-language': 'en-GB,en;q=0.6',
+      'content-type': 'application/json',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-site',
+      'sec-gpc': '1',
+      'Referer': 'https://near.social/',
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
+    },
+    'body': JSON.stringify({keys: request}), //'{\"keys\":[\"*/nametag/whendacha.near/tags/*\"]}',
+    'method': 'POST'
+  }).then((response) => {
+    if(response.ok) {
+      return response.json();
+    }
+    throw new Error('Server response wasn\'t OK');
+  });
 }
