@@ -5,7 +5,7 @@ import {ReactiveVar} from 'meteor/reactive-var';
 import './my-profile.css';
 import './my-profile.html';
 
-const VIEW_LIMIT_OWNER = 20;
+const VIEW_LIMIT_OWNER = 100;
 const VIEW_LIMIT_PLAYER = 50;
 
 Template.myProfile.onCreated(function () {
